@@ -45,6 +45,8 @@ runs:
       shell: bash
       run: |
         echo ${{ format('{0}/**', steps.info.outputs.build-path) }}
+        pwd
+        ls -lah
 
     - name: Merge _build directory
       shell: bash
