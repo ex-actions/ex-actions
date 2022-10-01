@@ -1,0 +1,43 @@
+name: 'benstepp/elixir-actions/mix-deps-get'
+author: 'Ben Stepp'
+description: 'Installs and Caches your application dependencies'
+
+inputs:
+  working-directory:
+    description: 'Path to your elixir application. This can be configured if
+      your elixir application is in a subdirectory, for example if you are in a
+      monorepo.'
+    required: false
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Determine Information
+      id: info
+      shell: bash
+      run: |
+        if [[ "${{ inputs.working-directory }}" ]]; then cd ${{ inputs.working-directory }}; fi
+        echo "::set-output name=elixir-version::$(mix hex.info | grep 'Elixir:' | sed -n 's/Elixir://p' | sed -n 's/\s//pg')"
+        echo "::set-output name=otp-version::$(mix hex.info | grep 'OTP:' | sed -n 's/OTP://p' | sed -n 's/\s//pg')"
+        echo "::set-output name=deps-path::$(mix run -e 'Logger.remove_backend(:console);IO.inpsect(Mix.Project.deps_path())')"
+
+    - name: Cache Dependencies
+      uses: actions/cache@v2
+      id: cache-deps
+      with:
+        path: ${{ steps.info.deps-path }}
+        key: ${{runner.os}}-${{runner.arch}}-${{ steps.info.elixir-version }}-${{ steps.info.otp-version }}-deps-${{ hashFiles('mix.lock') }}
+        restore-keys: |
+          ${{runner.os}}-${{runner.arch}}-${{ steps.info.elixir-version }}-${{ steps.info.otp-version }}-deps-
+
+    - name: Install Dependencies
+      shell: bash
+      run: |
+        if [[ "${{ inputs.working-directory }}" ]]; then cd ${{ inputs.working-directory }}; fi
+        mix deps.get
+
+    - name: Test
+      shell: bash
+      run: |
+        echo ${{ steps.info.deps-path }}
+
