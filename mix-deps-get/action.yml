@@ -32,13 +32,8 @@ runs:
           ${{runner.os}}-${{runner.arch}}-${{ steps.info.outputs.elixir-version }}-${{ steps.info.outputs.otp-version }}-deps-
 
     - name: Install Dependencies
+      if: steps.cache-deps.outputs.cache-hit != 'true'
       shell: bash
       run: |
         if [[ "${{ inputs.working-directory }}" ]]; then cd ${{ inputs.working-directory }}; fi
         mix deps.get
-
-    - name: Test
-      shell: bash
-      run: |
-        echo '${{ toJSON(steps.info.outputs) }}'
-
