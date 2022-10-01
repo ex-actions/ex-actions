@@ -27,9 +27,9 @@ runs:
       id: cache-deps
       with:
         path: format('{0}/**', steps.info.outputs.deps-path)
-        key: ${{runner.os}}-${{runner.arch}}-${{ steps.info.outputs.elixir-version }}-${{ steps.info.outputs.otp-version }}-deps-${{ hashFiles( steps.info.outputs.mix-lock-path ) }}
+        key: ${{runner.os}}-${{runner.arch}}-${{ steps.info.outputs.elixir-version }}-${{ steps.info.outputs.otp-version }}-deps-${{ steps.info.outputs.deps-path }}-${{ hashFiles( steps.info.outputs.mix-lock-path ) }}
         restore-keys: |
-          ${{runner.os}}-${{runner.arch}}-${{ steps.info.outputs.elixir-version }}-${{ steps.info.outputs.otp-version }}-deps-
+          ${{runner.os}}-${{runner.arch}}-${{ steps.info.outputs.elixir-version }}-${{ steps.info.outputs.otp-version }}-deps-${{ steps.info.outputs.deps-path }}-
 
     - name: Install Dependencies
       if: steps.cache-deps.outputs.cache-hit != 'true'
