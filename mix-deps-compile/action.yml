@@ -45,5 +45,9 @@ runs:
       shell: bash
       run: |
         if [[ "${{ inputs.working-directory }}" ]]; then cd ${{ inputs.working-directory }}; fi
+        pwd
+        ls -lah
         mkdir -p _build/
+        pwd
+        ls -lah
         rsync -a _build_deps/ _build
