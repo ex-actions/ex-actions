@@ -17,7 +17,7 @@ jobs:
 
       - uses: "./setup"
         with:
-          working-directory: './test_apps/app'
+          working-directory: 'test_apps/app'
 
       - name: Test
         run: |

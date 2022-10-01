@@ -23,11 +23,19 @@ runs:
         if [[ "${{ inputs.working-directory }}" ]]; then cd ${{ inputs.working-directory }}; fi
         echo "::set-output name=elixir-version::$(mix hex.info | grep 'Elixir:' | sed -n 's/Elixir://p' | sed -n 's/\s//pg')"
         echo "::set-output name=otp-version::$(mix hex.info | grep 'OTP:' | sed -n 's/OTP://p' | sed -n 's/\s//pg')"
-        echo "::set-output name=build-path::$(pwd)/_build_app"
-        echo "::set-output name=app-path::$(pwd)/**/*.ex"
-        echo "::set-output name=include-path::$(pwd)/include/**/*"
-        echo "::set-output name=priv-path::$(pwd)/priv/**/*"
-        echo "::set-output name=mix-lock-path::$(pwd)/mix.lock"
+        if [[ "${{ inputs.working-directory }}" ]]; then
+          echo "::set-output name=app-path::${{ inputs.working-directory }}/**/*.ex"
+          echo "::set-output name=build-path::${{ inputs.working-directory }}/_build_app"
+          echo "::set-output name=include-path::${{ inputs.working-directory }}/include/**"
+          echo "::set-output name=mix-lock-path::${{ inputs.working-directory }}/mix.lock"
+          echo "::set-output name=priv-path::${{ inputs.working-directory }}/priv/**"
+        else
+          echo "::set-output name=app-path::**/*.ex"
+          echo "::set-output name=build-path::_build_app"
+          echo "::set-output name=include-path::include/**"
+          echo "::set-output name=mix-lock-path::mix.lock"
+          echo "::set-output name=priv-path::priv/**"
+        fi
 
     - name: Cache Compiled App
       uses: actions/cache@v2
