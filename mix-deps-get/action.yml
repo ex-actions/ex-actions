@@ -20,15 +20,16 @@ runs:
         echo "::set-output name=elixir-version::$(mix hex.info | grep 'Elixir:' | sed -n 's/Elixir://p' | sed -n 's/\s//pg')"
         echo "::set-output name=otp-version::$(mix hex.info | grep 'OTP:' | sed -n 's/OTP://p' | sed -n 's/\s//pg')"
         echo "::set-output name=deps-path::$(mix run -e 'Logger.remove_backend(:console);IO.inspect(Mix.Project.deps_path())' --no-archives-check --no-compile --no-deps-check --no-elixir-version-check --no-start)"
+        echo "::set-output name=mix-lock-path::$(pwd)/mix.lock"
 
     - name: Cache Dependencies
       uses: actions/cache@v2
       id: cache-deps
       with:
         path: format('{}/**', steps.info.outputs.deps-path)
-        key: ${{runner.os}}-${{runner.arch}}-${{ steps.info.outputs.elixir-version }}-${{ steps.info.otp-version }}-deps-${{ hashFiles('mix.lock') }}
+        key: ${{runner.os}}-${{runner.arch}}-${{ steps.info.outputs.elixir-version }}-${{ steps.info.outputs.otp-version }}-deps-${{ hashFiles( steps.info.outputs.mix-lock-path ) }}
         restore-keys: |
-          ${{runner.os}}-${{runner.arch}}-${{ steps.info.outputs.elixir-version }}-${{ steps.info.otp-version }}-deps-
+          ${{runner.os}}-${{runner.arch}}-${{ steps.info.outputs.elixir-version }}-${{ steps.info.outputs.otp-version }}-deps-
 
     - name: Install Dependencies
       shell: bash
