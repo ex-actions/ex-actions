@@ -20,10 +20,10 @@ runs:
         echo "::set-output name=elixir-version::$(mix hex.info | grep 'Elixir:' | sed -n 's/Elixir://p' | sed -n 's/\s//pg')"
         echo "::set-output name=otp-version::$(mix hex.info | grep 'OTP:' | sed -n 's/OTP://p' | sed -n 's/\s//pg')"
         if [[ "${{ inputs.working-directory }}" ]]; then
-          echo "::set-output name=deps-path::${{ inputs.working-directory }}/_build_deps"
+          echo "::set-output name=build-path::${{ inputs.working-directory }}/_build_deps"
           echo "::set-output name=mix-lock-path::${{ inputs.working-directory }}/mix.lock"
         else
-          echo "::set-output name=deps-path::_build_deps"
+          echo "::set-output name=build-path::_build_deps"
           echo "::set-output name=mix-lock-path::mix.lock"
         fi
         ls -lah
@@ -32,7 +32,7 @@ runs:
       uses: actions/cache@v2
       id: cache-build-deps
       with:
-        path: format('{0}/**', steps.info.outputs.build-path)
+        path: steps.info.outputs.build-path
         key: ${{runner.os}}-${{runner.arch}}-${{ steps.info.outputs.elixir-version }}-${{ steps.info.outputs.otp-version }}-builddeps-${{ steps.info.outputs.build-path }}-${{ hashFiles( steps.info.outputs.mix-lock-path ) }}
         restore-keys: |
           ${{runner.os}}-${{runner.arch}}-${{ steps.info.outputs.elixir-version }}-${{ steps.info.outputs.otp-version }}-builddeps-${{ steps.info.outputs.build-path }}-
