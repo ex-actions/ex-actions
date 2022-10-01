@@ -1,5 +1,5 @@
 name: 'benstepp/elixir-actions/mix-deps-get'
-author: 'Ben Stepp'
+author: 'Benjamin Stepp'
 description: 'Installs and Caches your application dependencies'
 
 inputs:
