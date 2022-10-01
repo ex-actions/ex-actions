@@ -42,11 +42,11 @@ runs:
       id: cache-build-app
       with:
         path: ${{ steps.info.outputs.build-path }}
-        key: ${{runner.os}}-${{runner.arch}}-${{ steps.info.outputs.elixir-version }}-${{ steps.info.outputs.otp-version }}-buildapp-${{ steps.info.outputs.build-path }}-${{ inputs.cache-key }}-${{ hashFiles( steps.info.outputs.mix-lock-path ) }}-${{ hashFiles( steps.info.outputs.app-path, steps.info.outputs.include-path, steps.info.outputs.priv-path ) }}
+        key: ${{runner.os}}-${{runner.arch}}-${{ steps.info.outputs.elixir-version }}-${{ steps.info.outputs.otp-version }}-buildapp-${{ steps.info.outputs.build-path }}-${{ env.MIX_ENV }}-${{ inputs.cache-key }}-${{ hashFiles( steps.info.outputs.mix-lock-path ) }}-${{ hashFiles( steps.info.outputs.app-path, steps.info.outputs.include-path, steps.info.outputs.priv-path ) }}
         restore-keys: |
-          ${{runner.os}}-${{runner.arch}}-${{ steps.info.outputs.elixir-version }}-${{ steps.info.outputs.otp-version }}-buildapp-${{ steps.info.outputs.build-path }}-${{ inputs.cache-key }}-${{ hashFiles( steps.info.outputs.mix-lock-path ) }}-
-          ${{runner.os}}-${{runner.arch}}-${{ steps.info.outputs.elixir-version }}-${{ steps.info.outputs.otp-version }}-buildapp-${{ steps.info.outputs.build-path }}-${{ inputs.cache-key }}-
-          ${{runner.os}}-${{runner.arch}}-${{ steps.info.outputs.elixir-version }}-${{ steps.info.outputs.otp-version }}-buildapp-${{ steps.info.outputs.build-path }}-
+          ${{runner.os}}-${{runner.arch}}-${{ steps.info.outputs.elixir-version }}-${{ steps.info.outputs.otp-version }}-buildapp-${{ steps.info.outputs.build-path }}-${{ env.MIX_ENV }}-${{ inputs.cache-key }}-${{ hashFiles( steps.info.outputs.mix-lock-path ) }}-
+          ${{runner.os}}-${{runner.arch}}-${{ steps.info.outputs.elixir-version }}-${{ steps.info.outputs.otp-version }}-buildapp-${{ steps.info.outputs.build-path }}-${{ env.MIX_ENV }}-${{ inputs.cache-key }}-
+          ${{runner.os}}-${{runner.arch}}-${{ steps.info.outputs.elixir-version }}-${{ steps.info.outputs.otp-version }}-buildapp-${{ steps.info.outputs.build-path }}-${{ env.MIX_ENV }}-
           ${{runner.os}}-${{runner.arch}}-${{ steps.info.outputs.elixir-version }}-${{ steps.info.outputs.otp-version }}-buildapp-
 
     - name: Compile Application

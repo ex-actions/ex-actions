@@ -33,9 +33,9 @@ runs:
       id: cache-build-deps
       with:
         path: ${{ steps.info.outputs.build-path }}
-        key: ${{runner.os}}-${{runner.arch}}-${{ steps.info.outputs.elixir-version }}-${{ steps.info.outputs.otp-version }}-builddeps-${{ steps.info.outputs.build-path }}-${{ hashFiles( steps.info.outputs.mix-lock-path ) }}
+        key: ${{runner.os}}-${{runner.arch}}-${{ steps.info.outputs.elixir-version }}-${{ steps.info.outputs.otp-version }}-builddeps-${{ steps.info.outputs.build-path }}-${{ env.MIX_ENV }}-${{ hashFiles( steps.info.outputs.mix-lock-path ) }}
         restore-keys: |
-          ${{runner.os}}-${{runner.arch}}-${{ steps.info.outputs.elixir-version }}-${{ steps.info.outputs.otp-version }}-builddeps-${{ steps.info.outputs.build-path }}-
+          ${{runner.os}}-${{runner.arch}}-${{ steps.info.outputs.elixir-version }}-${{ steps.info.outputs.otp-version }}-builddeps-${{ steps.info.outputs.build-path }}-${{ env.MIX_ENV }}-
 
     - name: Compile Dependencies
       if: steps.cache-build-deps.outputs.cache-hit != 'true'
