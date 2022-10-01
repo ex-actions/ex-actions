@@ -26,7 +26,7 @@ runs:
       uses: actions/cache@v2
       id: cache-deps
       with:
-        path: format('{}/**', steps.info.outputs.deps-path)
+        path: format('{0}/**', steps.info.outputs.deps-path)
         key: ${{runner.os}}-${{runner.arch}}-${{ steps.info.outputs.elixir-version }}-${{ steps.info.outputs.otp-version }}-deps-${{ hashFiles( steps.info.outputs.mix-lock-path ) }}
         restore-keys: |
           ${{runner.os}}-${{runner.arch}}-${{ steps.info.outputs.elixir-version }}-${{ steps.info.outputs.otp-version }}-deps-
@@ -41,4 +41,4 @@ runs:
     - name: Where folder??
       shell: bash
       run: |
-        echo ${{ format('{}/**', steps.info.outputs.deps-path) }}
+        echo ${{ format('{0}/**', steps.info.outputs.deps-path) }}
