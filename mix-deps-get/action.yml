@@ -41,4 +41,4 @@ runs:
     - name: Where folder??
       shell: bash
       run: |
-        echo "${{ format('{}/**', steps.info.outputs.deps-path) }}"
+        echo ${{ format('{}/**', steps.info.outputs.deps-path) }}
