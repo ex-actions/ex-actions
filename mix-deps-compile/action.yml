@@ -26,7 +26,6 @@ runs:
           echo "::set-output name=build-path::_build_deps"
           echo "::set-output name=mix-lock-path::mix.lock"
         fi
-        ls -lah
 
     - name: Cache Dependencies
       uses: actions/cache@v2
@@ -51,6 +50,5 @@ runs:
       shell: bash
       run: |
         if [[ "${{ inputs.working-directory }}" ]]; then cd ${{ inputs.working-directory }}; fi
-        ls -lah
         mkdir -p _build/
         rsync -a _build_deps/ _build
