@@ -41,6 +41,11 @@ runs:
         mkdir -p _build_deps
         mix deps.compile
 
+    - name: Where folder??
+      shell: bash
+      run: |
+        echo "${{ format('{}/**', steps.info.outputs.deps-path) }}"
+
     - name: Merge _build directory
       shell: bash
       run: |
