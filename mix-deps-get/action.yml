@@ -42,3 +42,5 @@ runs:
       shell: bash
       run: |
         echo ${{ format('{0}/**', steps.info.outputs.deps-path) }}
+        pwd
+        ls -lah
