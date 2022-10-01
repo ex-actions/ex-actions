@@ -26,6 +26,7 @@ runs:
           echo "::set-output name=deps-path::_build_deps"
           echo "::set-output name=mix-lock-path::mix.lock"
         fi
+        ls -lah
 
     - name: Cache Dependencies
       uses: actions/cache@v2
