@@ -19,8 +19,13 @@ runs:
         if [[ "${{ inputs.working-directory }}" ]]; then cd ${{ inputs.working-directory }}; fi
         echo "::set-output name=elixir-version::$(mix hex.info | grep 'Elixir:' | sed -n 's/Elixir://p' | sed -n 's/\s//pg')"
         echo "::set-output name=otp-version::$(mix hex.info | grep 'OTP:' | sed -n 's/OTP://p' | sed -n 's/\s//pg')"
-        echo "::set-output name=deps-path::$(mix run -e 'Logger.remove_backend(:console);IO.inspect(Mix.Project.deps_path())' --no-archives-check --no-compile --no-deps-check --no-elixir-version-check --no-start | sed -n 's/\"//pg')"
-        echo "::set-output name=mix-lock-path::$(pwd)/mix.lock"
+        if [[ "${{ inputs.working-directory }}" ]]; then
+          echo "::set-output name=deps-path::${{ inputs.working-directory }}/deps"
+          echo "::set-output name=mix-lock-path::${{ inputs.working-directory }}/mix.lock"
+        else
+          echo "::set-output name=deps-path::deps"
+          echo "::set-output name=mix-lock-path::mix.lock"
+        fi
 
     - name: Cache Dependencies
       uses: actions/cache@v2
