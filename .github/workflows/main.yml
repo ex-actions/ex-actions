@@ -1,0 +1,24 @@
+name: Main
+
+on:
+  workflow_dispatch:
+
+env:
+  elixir-version: "1.14.0"
+  otp-version: "25.0.4"
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: "./setup"
+        with:
+          working-directory: './test_apps/app'
+
+      - name: Test
+        run: |
+          echo "Test"
