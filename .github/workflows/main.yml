@@ -6,6 +6,7 @@ on:
 env:
   elixir-version: "1.14.0"
   otp-version: "25.0.4"
+  MIX_ENV: test
 
 jobs:
   test:
