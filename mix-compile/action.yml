@@ -66,4 +66,4 @@ runs:
       run: |
         if [[ "${{ inputs.working-directory }}" ]]; then cd ${{ inputs.working-directory }}; fi
         mkdir -p _build/
-        rsync -a _build_app/build
+        rsync -a _build_app/ _build
