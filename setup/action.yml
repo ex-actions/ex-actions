@@ -39,10 +39,3 @@ runs:
       uses: ./mix-deps-get
       with:
         working-directory: ${{ inputs.working-directory }}
-
-    - name: Test
-      shell: bash
-      run: |
-        if [[ "${{ inputs.working-directory }}" ]]; then cd ${{ inputs.working-directory }}; fi
-        pwd
-        ls -lah
