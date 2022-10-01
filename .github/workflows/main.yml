@@ -11,6 +11,9 @@ jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: 'test_apps/app'
 
     steps:
       - uses: actions/checkout@v2
@@ -22,3 +25,6 @@ jobs:
       - name: Test
         run: |
           echo "Test"
+          pwd
+          ls -lah
+          mix test
