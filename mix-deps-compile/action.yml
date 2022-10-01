@@ -41,20 +41,9 @@ runs:
         mkdir -p _build_deps
         mix deps.compile
 
-    - name: Where folder??
-      shell: bash
-      run: |
-        echo ${{ format('{0}/**', steps.info.outputs.build-path) }}
-        pwd
-        ls -lah
-
     - name: Merge _build directory
       shell: bash
       run: |
         if [[ "${{ inputs.working-directory }}" ]]; then cd ${{ inputs.working-directory }}; fi
-        pwd
-        ls -lah
         mkdir -p _build/
-        pwd
-        ls -lah
         rsync -a _build_deps/ _build

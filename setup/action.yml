@@ -44,3 +44,8 @@ runs:
       uses: ./mix-deps-compile
       with:
         working-directory: ${{ inputs.working-directory }}
+
+    - name: Compile App
+      uses: ./mix-compile
+      with:
+        working-directory: ${{ inputs.working-directory }}
