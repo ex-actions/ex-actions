@@ -11,7 +11,7 @@ inputs:
   cache-key:
     description: 'Additional Cache Key to use in cache key generation.'
     required: false
-    default: ''
+    default: 'key'
 
 runs:
   using: 'composite'
@@ -21,6 +21,7 @@ runs:
       shell: bash
       run: |
         if [[ "${{ inputs.working-directory }}" ]]; then cd ${{ inputs.working-directory }}; fi
+        echo "::echo::on"
         echo "::set-output name=elixir-version::$(mix hex.info | grep 'Elixir:' | sed -n 's/Elixir://p' | sed -n 's/\s//pg')"
         echo "::set-output name=otp-version::$(mix hex.info | grep 'OTP:' | sed -n 's/OTP://p' | sed -n 's/\s//pg')"
         bash ${{ github.action_path }}/config-files.sh
