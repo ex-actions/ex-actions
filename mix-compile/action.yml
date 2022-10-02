@@ -44,7 +44,9 @@ runs:
     - name: Test
       shell: bash
       run: |
-        echo ${{ toJSON(steps.compile-info.outputs) }}
+        echo "${{ toJSON(steps.compile-info.outputs) }}"
+        echo "${{ steps.compile-info.outputs.config-files }}"
+        echo "${{ fromJSON(steps.compile-info.outputs.config-files) }}"
 
     - name: Cache Compiled App
       uses: actions/cache@v2
