@@ -32,7 +32,7 @@ runs:
             |> Enum.join(",")
             |> then(&"[#{&1}]")
             |> IO.inspect()
-          ' --no-compile --no-deps-check --no-archives-check --no-start
+          ' --no-compile --no-deps-check --no-archives-check --no-start | sed -n 's/^\"//pg' | sed -n 's/\"$//pg'
         )"
         if [[ "${{ inputs.working-directory }}" ]]; then
           echo "::set-output name=app-path::${{ inputs.working-directory }}/**/*.ex"
