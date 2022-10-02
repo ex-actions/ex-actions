@@ -22,6 +22,7 @@ changed_apps=$(
   IO.inspect(System.argv())
 
   # pwd - working directory = base
+  base = String.replace_suffix(pwd, working_directory, "")
 
   apps_map = Mix.Project.apps_paths()
              |> Enum.reduce(%{}, &add_deps.(&1, &2))
@@ -38,7 +39,7 @@ changed_apps=$(
   |> List.first()
   |> String.split(" ")
   |> Enum.reduce([], fn file, acc ->
-    full_path = Path.join(pwd, file)
+    full_path = Path.join(base, file)
 
     Enum.reduce(apps_paths, acc, fn {app, path}, acc ->
       case String.starts_with?(full_path, path) do
@@ -59,4 +60,4 @@ changed_apps=$(
   ' --no-deps-check --no-compile --no-archives-check --no-start -- $1 $(pwd) $2
 )
 
-echo "::set-output name=changed-apps::$changed_apps"
+echo "::set-output name=changed-apps::$($changed_apps | sed -n 's/^\"//pg' | sed -n 's/\"$//pg' | sed -n 's/\\//pg')"
