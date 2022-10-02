@@ -28,5 +28,6 @@ runs:
       working-directory: ${{ inputs.working-directory }}
 
     - name: test
+      shell: bash
       run: |
         echo ${{ fromJSON(steps.changes.outputs) }}
