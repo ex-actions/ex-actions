@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 
-echo "::set-output name=apps::$(
+for file in $1; do
+  echo $file
+done
+
+CHANGED_APPS=$(
   mix run -e '
   add_deps = fn ({app, path}, acc) ->
     Mix.Project.in_project(app, path, fn _ ->
@@ -58,4 +62,7 @@ echo "::set-output name=apps::$(
   |> then(&"[#{&1}]")
   |> IO.inspect()
   ' --no-deps-check --no-compile --no-archives-check --no-start -- $1 $(pwd) $2 | sed -n 's/^\"//pg' | sed -n 's/\"$//pg' | sed -n 's/\\//pg'
-)"
+)
+
+echo $CHANGED_APPS
+echo "::set-output name=apps::$CHANGED_APPS"
