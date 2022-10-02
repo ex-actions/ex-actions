@@ -1,4 +1,0 @@
-# ElixirUmbrella
-
-**TODO: Add description**
-
