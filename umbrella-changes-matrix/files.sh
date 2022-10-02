@@ -1,4 +1,4 @@
-#!/usr/bini/env bash
+#!/usr/bin/env bash
 
 changed_apps=$(
   mix run -e '
