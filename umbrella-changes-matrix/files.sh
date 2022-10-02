@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-changed_apps=$(
+echo "::set-output name=apps::$(
   mix run -e '
   add_deps = fn ({app, path}, acc) ->
     Mix.Project.in_project(app, path, fn _ ->
@@ -56,8 +56,9 @@ changed_apps=$(
   |> List.flatten()
   |> Enum.uniq()
   |> Enum.map(&to_string/1)
+  |> Enum.map(&Kernel.inspect/1)
+  |> Enum.join(",")
+  |> then(&"[#{&1}]")
   |> IO.inspect()
-  ' --no-deps-check --no-compile --no-archives-check --no-start -- $1 $(pwd) $2
+  ' --no-deps-check --no-compile --no-archives-check --no-start -- $1 $(pwd) $2 | sed -n 's/^\"//pg' | sed -n 's/\"$//pg' | sed -n 's/\\//pg'
 )
-
-echo "::set-output name=apps::$($changed_apps | sed -n 's/^\"//pg' | sed -n 's/\"$//pg' | sed -n 's/\\//pg')"

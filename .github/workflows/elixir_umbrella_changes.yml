@@ -30,6 +30,10 @@ jobs:
 
       - name: Test
         run: |
+          echo ${{ steps.changes.outputs.apps }}
+
+      - name: Lol
+        run: |
           echo ${{ fromJSON(steps.changes.outputs.apps) }}
           pwd
           ls -lah
