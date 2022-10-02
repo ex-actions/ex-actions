@@ -1,0 +1,36 @@
+name: Test - Elixir Umbrella Changes
+
+on:
+  workflow_dispatch:
+
+env:
+  elixir-version: "1.14.0"
+  otp-version: "25.0.4"
+  MIX_ENV: test
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: 'test_apps/test_umbrella'
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: "./setup"
+        with:
+          working-directory: 'test_apps/test_umbrella'
+
+      - uses: "./umbrella-changes-matrix"
+        id: changes
+        with:
+          working-directory: 'test_apps/test_umbrella'
+
+      - name: Test
+        run: |
+          echo ${{ fromJSON(steps.changes.outputs.apps) }}
+          pwd
+          ls -lah
+          mix test
