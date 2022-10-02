@@ -4,37 +4,72 @@ on:
   workflow_dispatch:
 
 env:
+  working-directory: 'test_apps/test_umbrella'
   elixir-version: "1.14.0"
   otp-version: "25.0.4"
   MIX_ENV: test
 
 jobs:
+  compile:
+    name: Compile
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: "./setup"
+        with:
+          working-directory: ${{ env.working-directory }}
+
+  matrix:
+    name: Change Apps Matrix
+    needs: [compile]
+    runs-on: ubuntu-latest
+    outputs:
+      apps: ${{ steps.changes.apps }}
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: "./setup"
+        with:
+          working-directory: ${{ env.working-directory }}
+
+      - uses: './umbrella-changes-matrix'
+        id: changes
+        with:
+          working-directory: ${{ env.working-directory }}
+
+  format:
+    name: Format
+    needs: [compile]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: "./setup"
+        with:
+          working-directory: ${{ env.working-directory }}
+
+      - name: 'mix format'
+        run: 'mix format --check-formatted'
+
   test:
     name: Test
+    needs: [compile, matrix]
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: 'test_apps/test_umbrella'
+
+    strategy:
+      matrix:
+        app: ${{ needs.matrix.outputs.apps }}
 
     steps:
       - uses: actions/checkout@v2
 
       - uses: "./setup"
         with:
-          working-directory: 'test_apps/test_umbrella'
+          working-directory: ${{ env.working-directory }}
 
-      - uses: "./umbrella-changes-matrix"
-        id: changes
-        with:
-          working-directory: 'test_apps/test_umbrella'
-
-      - name: Test
+      - name: Mix Test
         run: |
-          echo ${{ steps.changes.outputs.apps }}
-
-      - name: Lol
-        run: |
-          echo ${{ fromJSON(steps.changes.outputs.apps) }}
-          pwd
-          ls -lah
-          mix test
+          cd ${{ env.working-directory }}
+          echo "${{ matrix.app }}"
+          mix cmd --app ${{ matrix.app }} mix test --color
