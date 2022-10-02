@@ -31,6 +31,7 @@ runs:
             |> Enum.map(&Kernel.inspect/1)
             |> Enum.join(",")
             |> then(&"[#{&1}]")
+            |> IO.inspect()
           ' --no-compile --no-deps-check --no-archives-check --no-start
         )"
         if [[ "${{ inputs.working-directory }}" ]]; then
