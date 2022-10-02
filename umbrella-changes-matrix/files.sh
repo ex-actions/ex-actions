@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+echo "::echo::on"
+
 for file in $1; do
   echo $file
 done
