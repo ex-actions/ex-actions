@@ -23,6 +23,7 @@ runs:
         if [[ "${{ inputs.working-directory }}" ]]; then cd ${{ inputs.working-directory }}; fi
         echo "::set-output name=elixir-version::$(mix hex.info | grep 'Elixir:' | sed -n 's/Elixir://p' | sed -n 's/\s//pg')"
         echo "::set-output name=otp-version::$(mix hex.info | grep 'OTP:' | sed -n 's/OTP://p' | sed -n 's/\s//pg')"
+        echo "::set-output name=config-files::$(mix run -e 'Logger.remove_backend(:console);IO.inspect(Mix.Project.config_files())' --no-compile --no-deps-check --no-archives-check --no-start)"
         if [[ "${{ inputs.working-directory }}" ]]; then
           echo "::set-output name=app-path::${{ inputs.working-directory }}/**/*.ex"
           echo "::set-output name=src-path::${{ inputs.working-directory }}/**/*.erl"
@@ -44,10 +45,11 @@ runs:
       id: cache-build-app
       with:
         path: ${{ steps.info.outputs.build-path }}
-        key: ${{runner.os}}-${{runner.arch}}-${{ steps.info.outputs.elixir-version }}-${{ steps.info.outputs.otp-version }}-buildapp-${{ steps.info.outputs.build-path }}-${{ env.MIX_ENV }}-${{ inputs.cache-key }}-${{ hashFiles( steps.info.outputs.mix-lock-path ) }}-${{ hashFiles( steps.info.outputs.app-path, steps.info.outputs.src-path, steps.info.outputs.include-path, steps.info.outputs.priv-path ) }}
+        key: ${{runner.os}}-${{runner.arch}}-${{ steps.info.outputs.elixir-version }}-${{ steps.info.outputs.otp-version }}-buildapp-${{ steps.info.outputs.build-path }}-${{ env.MIX_ENV }}-${{ hashFiles(fromJSON(steps.info.outputs.config-files)) }}-${{ inputs.cache-key }}-${{ hashFiles( steps.info.outputs.mix-lock-path ) }}-${{ hashFiles( steps.info.outputs.app-path, steps.info.outputs.src-path, steps.info.outputs.include-path, steps.info.outputs.priv-path ) }}
         restore-keys: |
-          ${{runner.os}}-${{runner.arch}}-${{ steps.info.outputs.elixir-version }}-${{ steps.info.outputs.otp-version }}-buildapp-${{ steps.info.outputs.build-path }}-${{ env.MIX_ENV }}-${{ inputs.cache-key }}-${{ hashFiles( steps.info.outputs.mix-lock-path ) }}-
-          ${{runner.os}}-${{runner.arch}}-${{ steps.info.outputs.elixir-version }}-${{ steps.info.outputs.otp-version }}-buildapp-${{ steps.info.outputs.build-path }}-${{ env.MIX_ENV }}-${{ inputs.cache-key }}-
+          ${{runner.os}}-${{runner.arch}}-${{ steps.info.outputs.elixir-version }}-${{ steps.info.outputs.otp-version }}-buildapp-${{ steps.info.outputs.build-path }}-${{ env.MIX_ENV }}-${{ hashFiles(fromJSON(steps.info.outputs.config-files)) }}-${{ inputs.cache-key }}-${{ hashFiles( steps.info.outputs.mix-lock-path ) }}-
+          ${{runner.os}}-${{runner.arch}}-${{ steps.info.outputs.elixir-version }}-${{ steps.info.outputs.otp-version }}-buildapp-${{ steps.info.outputs.build-path }}-${{ env.MIX_ENV }}-${{ hashFiles(fromJSON(steps.info.outputs.config-files)) }}-${{ inputs.cache-key }}-
+          ${{runner.os}}-${{runner.arch}}-${{ steps.info.outputs.elixir-version }}-${{ steps.info.outputs.otp-version }}-buildapp-${{ steps.info.outputs.build-path }}-${{ env.MIX_ENV }}-${{ hashFiles(fromJSON(steps.info.outputs.config-files)) }}-
           ${{runner.os}}-${{runner.arch}}-${{ steps.info.outputs.elixir-version }}-${{ steps.info.outputs.otp-version }}-buildapp-${{ steps.info.outputs.build-path }}-${{ env.MIX_ENV }}-
           ${{runner.os}}-${{runner.arch}}-${{ steps.info.outputs.elixir-version }}-${{ steps.info.outputs.otp-version }}-buildapp-
 
