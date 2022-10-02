@@ -1,4 +1,4 @@
-name: Test: Erlang Lib
+name: Test - Erlang Lib
 
 on:
   workflow_dispatch:

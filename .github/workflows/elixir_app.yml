@@ -1,4 +1,4 @@
-name: Test: Elixir App
+name: Test - Elixir App
 
 on:
   workflow_dispatch:
