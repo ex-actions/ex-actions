@@ -28,7 +28,7 @@ runs:
             Logger.remove_backend(:console)
 
             Mix.Project.config_files()
-            |> Enum.map(Kernel.inspect/1)
+            |> Enum.map(&Kernel.inspect/1)
             |> Enum.join(",")
             |> then(&"[#{&1}]")
           ' --no-compile --no-deps-check --no-archives-check --no-start
