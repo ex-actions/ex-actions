@@ -1,0 +1,31 @@
+name: Test - Elixir App
+
+on:
+  workflow_dispatch:
+
+env:
+  elixir-version: "1.14.0"
+  otp-version: "25.0.4"
+  MIX_ENV: test
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: 'test_apps/elixir_app'
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: "./setup"
+        with:
+          working-directory: 'test_apps/elixir_app'
+
+      - name: Test
+        run: |
+          echo "Test"
+          pwd
+          ls -lah
+          mix test
