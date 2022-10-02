@@ -8,5 +8,3 @@ services:
     tty: true
     volumes:
       - ./test_apps:/test_apps
-      - /test_apps/app/deps
-      - /test_apps/app/_build

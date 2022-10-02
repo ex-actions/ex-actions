@@ -22,13 +22,4 @@ RUN mix local.hex --force && mix local.rebar --force
 RUN mkdir /test_apps
 WORKDIR /test_apps
 
-#COPY ./mix.exs ./mix.lock ./
-#RUN mix deps.get
-#RUN mix deps.compile && MIX_ENV=test mix deps.compile
-#RUN mix dialyzer --plt
-
-#COPY ./test_apps .
-#RUN mix deps.get
-#RUN mix compile && MIX_ENV=test mix compile
-
 CMD ["bash"]
