@@ -13,7 +13,7 @@ runs:
   using: 'composite'
   steps:
     - name: Determine Information
-      id: info
+      id: deps-info
       shell: bash
       run: |
         if [[ "${{ inputs.working-directory }}" ]]; then cd ${{ inputs.working-directory }}; fi
@@ -31,10 +31,10 @@ runs:
       uses: actions/cache@v2
       id: cache-deps
       with:
-        path: ${{ steps.info.outputs.deps-path }}
-        key: ${{runner.os}}-${{runner.arch}}-${{ steps.info.outputs.elixir-version }}-${{ steps.info.outputs.otp-version }}-deps-${{ steps.info.outputs.deps-path }}-${{ env.MIX_ENV }}-${{ hashFiles( steps.info.outputs.mix-lock-path ) }}
+        path: ${{ steps.deps-info.outputs.deps-path }}
+        key: ${{runner.os}}-${{runner.arch}}-${{ steps.deps-info.outputs.elixir-version }}-${{ steps.deps-info.outputs.otp-version }}-deps-${{ steps.deps-info.outputs.deps-path }}-${{ env.MIX_ENV }}-${{ hashFiles( steps.deps-info.outputs.mix-lock-path ) }}
         restore-keys: |
-          ${{runner.os}}-${{runner.arch}}-${{ steps.info.outputs.elixir-version }}-${{ steps.info.outputs.otp-version }}-deps-${{ steps.info.outputs.deps-path }}-${{ env.MIX_ENV }}-
+          ${{runner.os}}-${{runner.arch}}-${{ steps.deps-info.outputs.elixir-version }}-${{ steps.deps-info.outputs.otp-version }}-deps-${{ steps.deps-info.outputs.deps-path }}-${{ env.MIX_ENV }}-
 
     - name: Install Dependencies
       if: steps.cache-deps.outputs.cache-hit != 'true'

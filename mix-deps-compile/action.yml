@@ -13,7 +13,7 @@ runs:
   using: 'composite'
   steps:
     - name: Determine Information
-      id: info
+      id: deps-compile-info
       shell: bash
       run: |
         if [[ "${{ inputs.working-directory }}" ]]; then cd ${{ inputs.working-directory }}; fi
@@ -31,10 +31,10 @@ runs:
       uses: actions/cache@v2
       id: cache-build-deps
       with:
-        path: ${{ steps.info.outputs.build-path }}
-        key: ${{runner.os}}-${{runner.arch}}-${{ steps.info.outputs.elixir-version }}-${{ steps.info.outputs.otp-version }}-builddeps-${{ steps.info.outputs.build-path }}-${{ env.MIX_ENV }}-${{ hashFiles( steps.info.outputs.mix-lock-path ) }}
+        path: ${{ steps.deps-compile-info.outputs.build-path }}
+        key: ${{runner.os}}-${{runner.arch}}-${{ steps.deps-compile-info.outputs.elixir-version }}-${{ steps.deps-compile-info.outputs.otp-version }}-builddeps-${{ steps.deps-compile-info.outputs.build-path }}-${{ env.MIX_ENV }}-${{ hashFiles( steps.deps-compile-info.outputs.mix-lock-path ) }}
         restore-keys: |
-          ${{runner.os}}-${{runner.arch}}-${{ steps.info.outputs.elixir-version }}-${{ steps.info.outputs.otp-version }}-builddeps-${{ steps.info.outputs.build-path }}-${{ env.MIX_ENV }}-
+          ${{runner.os}}-${{runner.arch}}-${{ steps.deps-compile-info.outputs.elixir-version }}-${{ steps.deps-compile-info.outputs.otp-version }}-builddeps-${{ steps.deps-compile-info.outputs.build-path }}-${{ env.MIX_ENV }}-
 
     - name: Compile Dependencies
       if: steps.cache-build-deps.outputs.cache-hit != 'true'
