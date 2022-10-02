@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
 
-for file in $1; do
-  echo $file
-done
-
 CHANGED_APPS=$(
   mix run -e '
   add_deps = fn ({app, path}, acc) ->

@@ -23,17 +23,7 @@ runs:
         if [[ "${{ inputs.working-directory }}" ]]; then cd ${{ inputs.working-directory }}; fi
         echo "::set-output name=elixir-version::$(mix hex.info | grep 'Elixir:' | sed -n 's/Elixir://p' | sed -n 's/\s//pg')"
         echo "::set-output name=otp-version::$(mix hex.info | grep 'OTP:' | sed -n 's/OTP://p' | sed -n 's/\s//pg')"
-        echo "::set-output name=config-files::$(
-          mix run -e '
-            Logger.remove_backend(:console)
-
-            Mix.Project.config_files()
-            |> Enum.map(&Kernel.inspect/1)
-            |> Enum.join(",")
-            |> then(&"[#{&1}]")
-            |> IO.inspect()
-          ' --no-compile --no-deps-check --no-archives-check --no-start | sed -n 's/^\"//pg' | sed -n 's/\"$//pg' | sed -n 's/\\//pg'
-        )"
+        bash ${{ github.action_path }}/config-files.sh
         if [[ "${{ inputs.working-directory }}" ]]; then
           echo "::set-output name=app-path::${{ inputs.working-directory }}/**/*.ex"
           echo "::set-output name=src-path::${{ inputs.working-directory }}/**/*.erl"
