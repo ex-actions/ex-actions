@@ -25,5 +25,7 @@ runs:
     - name: test
       shell: bash
       run: |
-        echo ${{ fromJSON(steps.changes.outputs) }}
-        echo ${{ steps.changes.outputs.apps }}
+        echo "${{ steps.changes.outputs }}"
+        echo "${{ fromJSON(steps.changes.outputs) }}"
+        echo "${{ steps.changes.outputs.apps }}"
+        echo "${{ fromJSON(steps.changes.outputs.apps) }}"
