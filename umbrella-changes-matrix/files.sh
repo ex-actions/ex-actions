@@ -19,9 +19,6 @@ echo "::set-output name=apps::$(
   end
 
   [changes, pwd, working_directory] = System.argv()
-  IO.inspect(System.argv())
-
-  # pwd - working directory = base
   base = String.replace_suffix(pwd, working_directory, "")
 
   apps_map = Mix.Project.apps_paths()
