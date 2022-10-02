@@ -1,6 +1,6 @@
-defmodule App do
+defmodule ElixirApp do
   @moduledoc """
-  Documentation for `App`.
+  Documentation for `ElixirApp`.
   """
 
   @doc """
@@ -8,7 +8,7 @@ defmodule App do
 
   ## Examples
 
-      iex> App.hello()
+      iex> ElixirApp.hello()
       :world
 
   """
