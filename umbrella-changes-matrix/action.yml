@@ -9,6 +9,11 @@ inputs:
       monorepo.'
     required: false
 
+outputs:
+  apps:
+    value: ${{ fromJSON(steps.changes.outputs.apps) }}
+
+
 runs:
   using: 'composite'
   steps:
@@ -17,6 +22,11 @@ runs:
       uses: tj-actions/changed-files@v31
 
     - name: Umbrella Changes
+      id: changes
       shell: bash
-      run: ${{ github.action_path }}/files.sh ${{ steps.files.outputs.all_changed_files }} ${{ inputs.working-directory }}
+      run: bash ${{ github.action_path }}/files.sh ${{ steps.files.outputs.all_changed_files }} ${{ inputs.working-directory }}
       working-directory: ${{ inputs.working-directory }}
+
+    - name: test
+      run: |
+        echo ${{ fromJSON(steps.changes.outputs) }}
