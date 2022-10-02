@@ -9,11 +9,6 @@ inputs:
       monorepo.'
     required: false
 
-outputs:
-  apps:
-    value: ${{ fromJSON(steps.changes.outputs.apps) }}
-
-
 runs:
   using: 'composite'
   steps:
@@ -31,3 +26,4 @@ runs:
       shell: bash
       run: |
         echo ${{ fromJSON(steps.changes.outputs) }}
+        echo ${{ steps.changes.outputs.apps }}
