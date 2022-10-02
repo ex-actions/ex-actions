@@ -25,12 +25,14 @@ runs:
         echo "::set-output name=otp-version::$(mix hex.info | grep 'OTP:' | sed -n 's/OTP://p' | sed -n 's/\s//pg')"
         if [[ "${{ inputs.working-directory }}" ]]; then
           echo "::set-output name=app-path::${{ inputs.working-directory }}/**/*.ex"
+          echo "::set-output name=src-path::${{ inputs.working-directory }}/**/*.erl"
           echo "::set-output name=build-path::${{ inputs.working-directory }}/_build_app"
           echo "::set-output name=include-path::${{ inputs.working-directory }}/include/**"
           echo "::set-output name=mix-lock-path::${{ inputs.working-directory }}/mix.lock"
           echo "::set-output name=priv-path::${{ inputs.working-directory }}/priv/**"
         else
           echo "::set-output name=app-path::**/*.ex"
+          echo "::set-output name=src-path::**/*.erl"
           echo "::set-output name=build-path::_build_app"
           echo "::set-output name=include-path::include/**"
           echo "::set-output name=mix-lock-path::mix.lock"
@@ -42,7 +44,7 @@ runs:
       id: cache-build-app
       with:
         path: ${{ steps.info.outputs.build-path }}
-        key: ${{runner.os}}-${{runner.arch}}-${{ steps.info.outputs.elixir-version }}-${{ steps.info.outputs.otp-version }}-buildapp-${{ steps.info.outputs.build-path }}-${{ env.MIX_ENV }}-${{ inputs.cache-key }}-${{ hashFiles( steps.info.outputs.mix-lock-path ) }}-${{ hashFiles( steps.info.outputs.app-path, steps.info.outputs.include-path, steps.info.outputs.priv-path ) }}
+        key: ${{runner.os}}-${{runner.arch}}-${{ steps.info.outputs.elixir-version }}-${{ steps.info.outputs.otp-version }}-buildapp-${{ steps.info.outputs.build-path }}-${{ env.MIX_ENV }}-${{ inputs.cache-key }}-${{ hashFiles( steps.info.outputs.mix-lock-path ) }}-${{ hashFiles( steps.info.outputs.app-path, steps.info.outputs.src-path, steps.info.outputs.include-path, steps.info.outputs.priv-path ) }}
         restore-keys: |
           ${{runner.os}}-${{runner.arch}}-${{ steps.info.outputs.elixir-version }}-${{ steps.info.outputs.otp-version }}-buildapp-${{ steps.info.outputs.build-path }}-${{ env.MIX_ENV }}-${{ inputs.cache-key }}-${{ hashFiles( steps.info.outputs.mix-lock-path ) }}-
           ${{runner.os}}-${{runner.arch}}-${{ steps.info.outputs.elixir-version }}-${{ steps.info.outputs.otp-version }}-buildapp-${{ steps.info.outputs.build-path }}-${{ env.MIX_ENV }}-${{ inputs.cache-key }}-
