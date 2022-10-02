@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-echo "::echo::on"
-
 for file in $1; do
   echo $file
 done
@@ -66,6 +64,4 @@ CHANGED_APPS=$(
   ' --no-deps-check --no-compile --no-archives-check --no-start -- $1 $(pwd) $2
 )
 
-echo "$CHANGED_APPS"
-echo "$(echo $CHANGED_APPS | sed 's/^\"//pg' | sed 's/\"$//pg' | sed 's/\\//pg')"
 echo "::set-output name=apps::$(echo $CHANGED_APPS | sed 's/^\"//pg' | sed 's/\"$//pg' | sed 's/\\//pg')"
