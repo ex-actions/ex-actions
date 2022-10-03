@@ -12,6 +12,7 @@ CONFIG_FILES=$(
       |> :crypto.hash_update(File.read!(file))
     end)
     |> :crypto.hash_final()
+    |> Base.encode16()
     |> IO.inspect()
   ' --no-compile --no-deps-check --no-archives-check --no-start
 )
