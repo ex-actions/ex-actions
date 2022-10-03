@@ -46,18 +46,17 @@ runs:
       run: |
         echo "${{ toJSON(steps.compile-info.outputs) }}"
         echo "${{ steps.compile-info.outputs.config-files }}"
-        echo "${{ fromJSON(steps.compile-info.outputs.config-files) }}"
 
     - name: Cache Compiled App
       uses: actions/cache@v2
       id: cache-build-app
       with:
         path: ${{ steps.compile-info.outputs.build-path }}
-        key: ${{runner.os}}-${{runner.arch}}-${{ steps.compile-info.outputs.elixir-version }}-${{ steps.compile-info.outputs.otp-version }}-buildapp-${{ steps.compile-info.outputs.build-path }}-${{ env.MIX_ENV }}-${{ hashFiles(fromJSON(steps.compile-info.outputs.config-files)) }}-${{ inputs.cache-key }}-${{ hashFiles( steps.compile-info.outputs.mix-lock-path ) }}-${{ hashFiles( steps.compile-info.outputs.app-path, steps.compile-info.outputs.src-path, steps.compile-info.outputs.include-path, steps.compile-info.outputs.priv-path ) }}
+        key: ${{runner.os}}-${{runner.arch}}-${{ steps.compile-info.outputs.elixir-version }}-${{ steps.compile-info.outputs.otp-version }}-buildapp-${{ steps.compile-info.outputs.build-path }}-${{ env.MIX_ENV }}-${{ steps.compile-info.outputs.config-files }}-${{ inputs.cache-key }}-${{ hashFiles( steps.compile-info.outputs.mix-lock-path ) }}-${{ hashFiles( steps.compile-info.outputs.app-path, steps.compile-info.outputs.src-path, steps.compile-info.outputs.include-path, steps.compile-info.outputs.priv-path ) }}
         restore-keys: |
-          ${{runner.os}}-${{runner.arch}}-${{ steps.compile-info.outputs.elixir-version }}-${{ steps.compile-info.outputs.otp-version }}-buildapp-${{ steps.compile-info.outputs.build-path }}-${{ env.MIX_ENV }}-${{ hashFiles(fromJSON(steps.compile-info.outputs.config-files)) }}-${{ inputs.cache-key }}-${{ hashFiles( steps.compile-info.outputs.mix-lock-path ) }}-
-          ${{runner.os}}-${{runner.arch}}-${{ steps.compile-info.outputs.elixir-version }}-${{ steps.compile-info.outputs.otp-version }}-buildapp-${{ steps.compile-info.outputs.build-path }}-${{ env.MIX_ENV }}-${{ hashFiles(fromJSON(steps.compile-info.outputs.config-files)) }}-${{ inputs.cache-key }}-
-          ${{runner.os}}-${{runner.arch}}-${{ steps.compile-info.outputs.elixir-version }}-${{ steps.compile-info.outputs.otp-version }}-buildapp-${{ steps.compile-info.outputs.build-path }}-${{ env.MIX_ENV }}-${{ hashFiles(fromJSON(steps.compile-info.outputs.config-files)) }}-
+          ${{runner.os}}-${{runner.arch}}-${{ steps.compile-info.outputs.elixir-version }}-${{ steps.compile-info.outputs.otp-version }}-buildapp-${{ steps.compile-info.outputs.build-path }}-${{ env.MIX_ENV }}-${{ steps.compile-info.outputs.config-files }}-${{ inputs.cache-key }}-${{ hashFiles( steps.compile-info.outputs.mix-lock-path ) }}-
+          ${{runner.os}}-${{runner.arch}}-${{ steps.compile-info.outputs.elixir-version }}-${{ steps.compile-info.outputs.otp-version }}-buildapp-${{ steps.compile-info.outputs.build-path }}-${{ env.MIX_ENV }}-${{ steps.compile-info.outputs.config-files }}-${{ inputs.cache-key }}-
+          ${{runner.os}}-${{runner.arch}}-${{ steps.compile-info.outputs.elixir-version }}-${{ steps.compile-info.outputs.otp-version }}-buildapp-${{ steps.compile-info.outputs.build-path }}-${{ env.MIX_ENV }}-${{ steps.compile-info.outputs.config-files }}-
           ${{runner.os}}-${{runner.arch}}-${{ steps.compile-info.outputs.elixir-version }}-${{ steps.compile-info.outputs.otp-version }}-buildapp-${{ steps.compile-info.outputs.build-path }}-${{ env.MIX_ENV }}-
 
           ${{runner.os}}-${{runner.arch}}-${{ steps.compile-info.outputs.elixir-version }}-${{ steps.compile-info.outputs.otp-version }}-buildapp-
