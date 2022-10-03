@@ -9,6 +9,11 @@ env:
   otp-version: "25.0.4"
   MIX_ENV: test
 
+defaults:
+  run:
+    working-directory: ${{ env.working-directory }}
+    shell: bash
+
 jobs:
   compile:
     name: Compile
@@ -69,6 +74,7 @@ jobs:
           working-directory: ${{ env.working-directory }}
 
       - name: Mix Test
+
         run: |
           cd ${{ env.working-directory }}
           echo "${{ matrix.app }}"
