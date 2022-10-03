@@ -61,4 +61,4 @@ CHANGED_APPS=$(
 )
 
 echo "::echo::on"
-echo "::set-output name=apps::$(echo $CHANGED_APPS | sed -n 's/^\"//pg' | sed -n 's/\"$//pg' | sed -n's/\\//pg')"
+echo "::set-output name=apps::$(echo $CHANGED_APPS | sed -n 's/^\"//pg' | sed -n 's/\"$//pg' | sed -n 's/\\//pg')"
