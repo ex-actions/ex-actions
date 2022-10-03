@@ -12,7 +12,7 @@ inputs:
 outputs:
   apps:
     description: 'A list of changed apps'
-    value: ${{ fromJSON(steps.changes.outputs.apps) }}
+    value: ${{ steps.changes.outputs.apps }}
 
 runs:
   using: 'composite'
