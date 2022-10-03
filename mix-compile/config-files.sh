@@ -18,4 +18,4 @@ CONFIG_FILES=$(
   ' --no-compile --no-deps-check --no-archives-check --no-start
 )
 
-echo "::set-output name=config-files::$(echo $CONFIG_FILES | sed 's/^\"//pg' | sed 's/\"$//pg')"
+echo "::set-output name=config-files::$(echo $CONFIG_FILES | sed -n 's/^\"//pg' | sed 's/\"$//pg')"
