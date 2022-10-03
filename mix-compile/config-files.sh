@@ -13,8 +13,9 @@ CONFIG_FILES=$(
     end)
     |> :crypto.hash_final()
     |> Base.encode16()
+    |> String.downcase()
     |> IO.inspect()
   ' --no-compile --no-deps-check --no-archives-check --no-start
 )
 
-echo "::set-output name=config-files::$CONFIG_FILES"
+echo "::set-output name=config-files::$(echo $CONFIG_FILES | sed 's/^\"//pg' | sed 's/\"$//pg')"
