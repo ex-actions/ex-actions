@@ -60,4 +60,5 @@ CHANGED_APPS=$(
   ' --no-deps-check --no-compile --no-archives-check --no-start -- $1 $(pwd) $2
 )
 
-echo "::set-output name=apps::$(echo $CHANGED_APPS | sed -n 's/^\"//pg' | sed -n 's/\"$//pg' | sed 's/\\//pg')"
+echo "::echo::on"
+echo "::set-output name=apps::$(echo $CHANGED_APPS | sed -n 's/^\"//pg' | sed -n 's/\"$//pg' | sed -n's/\\//pg')"
