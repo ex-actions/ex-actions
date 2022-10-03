@@ -65,7 +65,7 @@ jobs:
 
     strategy:
       matrix:
-        app: ${{ fromJSON(jobs.matrix.outputs.apps) }}
+        app: ${{ fromJSON(needs.matrix.outputs.apps) }}
 
     steps:
       - uses: actions/checkout@v2
@@ -95,5 +95,5 @@ jobs:
 
       - name: lol
         run: |
-          echo "${{ jobs.matrix.outputs.apps }}"
-          echo "${{ toJSON(jobs.matrix.outputs) }}"
+          echo "${{ needs.matrix.outputs.apps }}"
+          echo "${{ toJSON(needs.matrix.outputs) }}"
