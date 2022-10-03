@@ -64,7 +64,7 @@ jobs:
 
     strategy:
       matrix:
-        app: ${{ needs.matrix.outputs.apps }}
+        app: ${{ fromJSON(needs.matrix.outputs.apps) }}
 
     steps:
       - uses: actions/checkout@v2
@@ -73,7 +73,7 @@ jobs:
         with:
           working-directory: ${{ env.working-directory }}
 
-      - name: Mix Test
+      - name: mix test ${{ matrix.app }}
 
         run: |
           cd ${{ env.working-directory }}
