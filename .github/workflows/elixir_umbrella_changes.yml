@@ -57,6 +57,7 @@ jobs:
       - name: 'mix format'
         run: 'mix format --check-formatted'
 
+
   test:
     name: Test
     needs: [compile, matrix]
@@ -79,3 +80,20 @@ jobs:
           cd ${{ env.working-directory }}
           echo "${{ matrix.app }}"
           mix cmd --app ${{ matrix.app }} mix test --color
+
+  lol:
+    name: Test
+    needs: [compile, matrix]
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: "./setup"
+        with:
+          working-directory: ${{ env.working-directory }}
+
+      - name: lol
+        run: |
+          echo "${{ needs.matrix.outputs.apps }}"
+          echo "${{ toJSON(needs.matrix.outputs) }}"
