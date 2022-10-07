@@ -1,0 +1,35 @@
+name: Local
+
+on:
+  push:
+
+env:
+  elixir-version: "1.14.0"
+  otp-version: "25.0.4"
+  working-directory: "test_apps/test_umbrella"
+  MIX_ENV: test
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Elixir
+        uses: erlef/setup-beam@v1
+        with:
+          elixir-version: ${{ env.elixir-version }}
+          otp-version: ${{ env.otp-version }}
+          version-type: 'strict'
+
+      - name: Get Deps
+        uses: ./mix-deps-get
+        with:
+          working-directory: 'test_apps/elixir_app'
+
+      - name: test
+        shell: bash
+        run: |
+          echo "hi"
