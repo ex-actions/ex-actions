@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@actions/cache": "^3.0.4",
+    "@actions/glob": "^0.3.0"
+  }
+}

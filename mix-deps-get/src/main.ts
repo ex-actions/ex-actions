@@ -1,16 +1,20 @@
 import * as core from '@actions/core'
-import {wait} from './wait'
+import { checks } from './checks'
+import { restore, save } from './deps-cache'
+import { mixDepsGet } from './mix-deps-get'
 
 async function run(): Promise<void> {
   try {
-    const ms: string = core.getInput('milliseconds')
-    core.debug(`Waiting ${ms} milliseconds ...`) // debug is only output if you set the secret `ACTIONS_STEP_DEBUG` to true
+    const cwd: string = core.getInput('working-directory')
+    await checks(cwd)
 
-    core.debug(new Date().toTimeString())
-    await wait(parseInt(ms, 10))
-    core.debug(new Date().toTimeString())
+    const cached = await restore(cwd)
 
-    core.setOutput('time', new Date().toTimeString())
+    if (!cached) {
+      await mixDepsGet(cwd)
+      await save(cwd)
+    }
+
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message)
   }
