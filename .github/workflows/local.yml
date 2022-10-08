@@ -25,7 +25,7 @@ jobs:
           version-type: 'strict'
 
       - name: Get Deps
-        uses: ./mix-deps-get
+        uses: ./actions/mix-deps-get
         with:
           working-directory: 'test_apps/elixir_app'
 

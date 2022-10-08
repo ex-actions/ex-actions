@@ -1,9 +1,10 @@
 import * as core from '@actions/core'
-import { checks } from './checks'
-import { restore, save } from './deps-cache'
-import { mixDepsGet } from './mix-deps-get'
 
-async function run(): Promise<void> {
+import { exec } from '../utils'
+import { checks } from './checks'
+import { restore, save } from './cache'
+
+export async function run(): Promise<void> {
   try {
     const cwd: string = core.getInput('working-directory')
     await checks(cwd)
@@ -11,7 +12,13 @@ async function run(): Promise<void> {
     const cached = await restore(cwd)
 
     if (!cached) {
-      await mixDepsGet(cwd)
+      const result = await exec('mix', ['deps.get'], { cwd })
+
+      if (result.exitCode !== 0) {
+        core.error(result.stderr)
+        throw new Error(`mix deps.get failed to run`)
+      }
+
       await save(cwd)
     }
 
@@ -19,5 +26,3 @@ async function run(): Promise<void> {
     if (error instanceof Error) core.setFailed(error.message)
   }
 }
-
-run()
