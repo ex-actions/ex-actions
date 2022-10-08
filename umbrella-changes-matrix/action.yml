@@ -1,0 +1,28 @@
+name: 'benstepp/elixir-actions/umbrella-changes-matrix'
+author: 'Benjamin Stepp'
+description: 'Installs and Caches your application dependencies'
+
+inputs:
+  working-directory:
+    description: 'Path to your elixir application. This can be configured if
+      your elixir application is in a subdirectory, for example if you are in a
+      monorepo.'
+    required: false
+
+outputs:
+  apps:
+    description: 'A list of changed apps'
+    value: ${{ steps.changes.outputs.apps }}
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Changed Files
+      id: files
+      uses: tj-actions/changed-files@v31
+
+    - name: Umbrella Changes
+      id: changes
+      shell: bash
+      run: bash ${{ github.action_path }}/files.sh ${{ steps.files.outputs.all_changed_files }} ${{ inputs.working-directory }}
+      working-directory: ${{ inputs.working-directory }}

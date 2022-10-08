@@ -1,0 +1,14 @@
+name: 'benstepp/elixir-actions/mix-deps-get'
+description: 'Installs and Caches your application dependencies'
+author: 'Benjamin Stepp'
+
+inputs:
+  working-directory:
+    description: 'Path to your elixir application. This can be configured if
+      your elixir application is in a subdirectory, for example if you are in a
+      monorepo.'
+    required: false
+
+runs:
+  using: 'node16'
+  main: 'dist/index.js'
