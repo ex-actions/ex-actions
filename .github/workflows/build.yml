@@ -27,10 +27,11 @@ jobs:
         run: |
           cp README.md ./actions
           cp LICENSE ./actions
+          echo ${{ github.ref }} >> ./actions/${{ github.sha }}
 
       - name: Push Build
         uses: s0/git-publish-subdir-action@v2.5.1
-        env:
+          env:
           REPO: self
           BRANCH: build
           FOLDER: actions
