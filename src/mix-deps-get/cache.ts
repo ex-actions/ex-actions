@@ -3,7 +3,7 @@ import path from 'path'
 import * as core from '@actions/core'
 import * as glob from '@actions/glob'
 import * as cache from '@actions/cache'
-import { exec } from '../exec'
+import { exec } from '../utils'
 
 export const restore = async (cwd: string): Promise<boolean> => {
   if (!cache.isFeatureAvailable()) {

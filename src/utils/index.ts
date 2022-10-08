@@ -1,16 +1,9 @@
 import { constants } from 'node:fs'
 import { access } from 'node:fs/promises'
 import path from 'path'
-import * as core from '@actions/core'
-import { exec } from '../exec'
 
-export const checks = async (cwd: string): Promise<void> => {
-  await elixirInstalled()
-  await mixInstalled()
-  await hexInstalled()
-  await inMixProject(cwd)
-  await hasMixLock(cwd)
-}
+import { exec } from './exec'
+export { exec }
 
 export const elixirInstalled = async (): Promise<void> => {
   const result = await exec('elixir', ['--version'])
@@ -49,3 +42,4 @@ export const hasMixLock = async (cwd: string): Promise<void> => {
   const lockPath = path.join(cwd, 'mix.lock')
   await access(lockPath, constants.F_OK)
 }
+
