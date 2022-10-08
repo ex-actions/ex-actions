@@ -11,7 +11,7 @@
     "build": "ncc build src/$npm_config_action/entry.ts -o actions/$npm_config_action/dist --source-map --license licenses.txt",
     "watch": "npm run build -- -w",
     "test": "jest",
-    "build:all": "npm run build --action=mix-deps-get",
+    "build:all": "npm run build --action=mix-deps-get && npm run build --action=mix-deps-compile",
     "all": "npm run build && npm run format && npm run lint && npm run package && npm test"
   },
   "repository": {
@@ -29,7 +29,8 @@
     "@actions/cache": "^3.0.4",
     "@actions/core": "^1.10.0",
     "@actions/exec": "^1.1.1",
-    "@actions/glob": "^0.3.0"
+    "@actions/glob": "^0.3.0",
+    "@actions/io": "^1.1.2"
   },
   "devDependencies": {
     "@types/node": "^16.10.5",

@@ -1,7 +1,7 @@
 import * as core from '@actions/core'
 import {exec as rawExec} from '@actions/exec'
 
-interface ExecResponse {
+export interface ExecResponse {
   stderr: string
   stdout: string
   exitCode: number

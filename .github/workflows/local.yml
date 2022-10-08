@@ -10,12 +10,31 @@ env:
   MIX_ENV: test
 
 jobs:
-  test:
+  local:
     name: Test
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: |
+          npm ci
+
+      - name: Build Packaged Actions
+        run: |
+          npm run build:all
+
+      - name: Prepare Output
+        run: |
+          cp README.md ./actions
+          cp LICENSE ./actions
+          echo ${{ github.ref }} >> ./actions/${{ github.sha }}
 
       - name: Install Elixir
         uses: erlef/setup-beam@v1
@@ -29,7 +48,16 @@ jobs:
         with:
           working-directory: 'test_apps/elixir_app'
 
+      - name: Compile Deps
+        uses: ./actions/mix-deps-compile
+        with:
+          working-directory: 'test_apps/elixir_app'
+
       - name: test
         shell: bash
         run: |
           echo "hi"
+          cd test_apps/elixir_app
+          pwd
+          ls -lah
+          ls -lah _build

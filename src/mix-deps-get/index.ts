@@ -1,7 +1,6 @@
 import * as core from '@actions/core'
 
-import { exec } from '../utils'
-import { checks } from './checks'
+import { exec, checks } from '../utils'
 import { restore, save } from './cache'
 
 export async function run(): Promise<void> {
@@ -15,7 +14,6 @@ export async function run(): Promise<void> {
       const result = await exec('mix', ['deps.get'], { cwd })
 
       if (result.exitCode !== 0) {
-        core.error(result.stderr)
         throw new Error(`mix deps.get failed to run`)
       }
 
