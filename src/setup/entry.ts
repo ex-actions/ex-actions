@@ -6,8 +6,8 @@ import { mixDepsGet } from '../mix-deps-get'
 async function run(): Promise<void> {
   try {
     await mixDepsGet()
-    await mixDepsCompile()
-    await mixCompile()
+    await mixDepsCompile(true)
+    await mixCompile(true)
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message)
   }

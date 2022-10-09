@@ -9,9 +9,9 @@ import {
 } from './cache'
 import { DEPS_BUILD_ROOT } from '../constants'
 
-export async function mixDepsCompile(): Promise<void> {
+export async function mixDepsCompile(skipChecks?: boolean): Promise<void> {
   const cwd: string = core.getInput('working-directory')
-  await checks(cwd)
+  if (!skipChecks) await checks(cwd)
 
   const cached = await restore(cwd)
 

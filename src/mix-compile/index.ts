@@ -10,9 +10,10 @@ import {
 } from './cache'
 import { APP_BUILD_ROOT } from '../constants'
 
-export async function mixCompile(): Promise<void> {
+export async function mixCompile(skipChecks?: boolean): Promise<void> {
   const cwd: string = core.getInput('working-directory')
-  await checks(cwd)
+
+  if (!skipChecks) await checks(cwd)
 
   const cached = await restore(cwd)
 
