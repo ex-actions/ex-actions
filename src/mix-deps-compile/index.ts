@@ -1,11 +1,11 @@
-import * as io from '@actions/io'
 import * as core from '@actions/core'
-import { exec, ExecResponse, checks } from '../utils'
+import * as io from '@actions/io'
+import { checks, exec } from '../utils'
 import {
+  getCompiledBuildPath,
+  getDestinationBuildPath,
   restore,
   save,
-  getDestinationBuildPath,
-  getCompiledBuildPath,
 } from './cache'
 import { DEPS_BUILD_ROOT } from '../constants'
 

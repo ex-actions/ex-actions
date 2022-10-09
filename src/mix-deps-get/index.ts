@@ -1,6 +1,5 @@
 import * as core from '@actions/core'
-
-import { exec, checks } from '../utils'
+import { checks, exec } from '../utils'
 import { restore, save } from './cache'
 
 export async function mixDepsGet(): Promise<void> {

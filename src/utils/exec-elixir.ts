@@ -1,4 +1,4 @@
-import { exec, ExecResponse } from './exec'
+import { ExecResponse, exec } from './exec'
 
 const DEFAULT_OPTIONS: string[] = [
   '--no-compile',
@@ -8,7 +8,7 @@ const DEFAULT_OPTIONS: string[] = [
   '--no-elixir-version-check',
 ]
 
-const SCRIPT_PREFIX: string = `
+const SCRIPT_PREFIX = `
   :logger
   |> Application.get_env(:backends)
   |> Enum.map(&Logger.remove_backend/1)

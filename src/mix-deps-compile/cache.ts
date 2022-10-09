@@ -1,7 +1,7 @@
-import path from 'path'
 import * as glob from '@actions/glob'
 import * as utils from '../utils'
 import { DEPS_BUILD_ROOT } from '../constants'
+import path from 'path'
 
 export const restore = async (cwd: string): Promise<boolean> => {
   const key = await getCacheKey(cwd)
@@ -18,7 +18,7 @@ export const save = async (cwd: string): Promise<void> => {
 }
 
 export const getCacheKey = async (cwd: string): Promise<string> => {
-  return Promise.all([
+  const parts = await Promise.all([
     'cache-compiled-deps',
     utils.getPlatform(),
     utils.getArch(),
@@ -26,7 +26,8 @@ export const getCacheKey = async (cwd: string): Promise<string> => {
     utils.getOtpVersion(),
     getMixLockHash(cwd),
     getDestinationBuildPath(cwd),
-  ]).then((parts) => parts.join('--'))
+  ])
+  return parts.join('--')
 }
 
 export const getCompiledBuildPath = async (cwd: string): Promise<string> => {

@@ -1,7 +1,7 @@
-import path from 'path'
-import { constants } from 'node:fs'
 import { access } from 'node:fs/promises'
+import { constants } from 'node:fs'
 import { exec } from './exec'
+import path from 'path'
 
 export const checks = async (cwd: string): Promise<void> => {
   await elixirInstalled()

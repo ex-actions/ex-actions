@@ -1,5 +1,5 @@
-import os from 'os'
 import { exec } from './exec'
+import os from 'os'
 
 export const getPlatform = (): string => os.platform()
 export const getArch = (): string => os.arch()
@@ -14,7 +14,7 @@ export const getOtpVersion = async (): Promise<string> => {
 
 const findVersion = async (search: string): Promise<string> => {
   const hexInfo = await exec('mix', ['hex.info'])
-  const name = search.toLowerCase().replace(/\:/, '')
+  const name = search.toLowerCase().replace(/:/, '')
 
   if (hexInfo.exitCode !== 0) {
     throw new Error(`unable to run mix hex.info`)
@@ -22,7 +22,7 @@ const findVersion = async (search: string): Promise<string> => {
 
   const line: string | undefined = hexInfo.stdout
     .split('\n')
-    .find((line) => line.startsWith(search))
+    .find((l) => l.startsWith(search))
 
   if (typeof line === 'string') {
     const match = line.match(/\s+(.*)$/)
