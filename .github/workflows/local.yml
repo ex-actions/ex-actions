@@ -43,18 +43,8 @@ jobs:
           otp-version: ${{ env.otp-version }}
           version-type: 'strict'
 
-      - name: Get Deps
-        uses: ./actions/mix-deps-get
-        with:
-          working-directory: 'test_apps/elixir_app'
-
-      - name: Compile Deps
-        uses: ./actions/mix-deps-compile
-        with:
-          working-directory: 'test_apps/elixir_app'
-
-      - name: Compile App
-        uses: ./actions/mix-compile
+      - name: Setup
+        uses: ./actions/setup
         with:
           working-directory: 'test_apps/elixir_app'
 

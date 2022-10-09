@@ -4,20 +4,15 @@ import { exec, ExecResponse, checks } from '../utils'
 import { restore, save, getDestinationBuildPath, getCompiledBuildPath } from './cache'
 import { DEPS_BUILD_ROOT } from '../constants'
 
-export async function run(): Promise<void> {
-  try {
-    const cwd: string = core.getInput('working-directory')
-    await checks(cwd)
+export async function mixDepsCompile(): Promise<void> {
+  const cwd: string = core.getInput('working-directory')
+  await checks(cwd)
 
-    const cached = await restore(cwd)
+  const cached = await restore(cwd)
 
-    if (!cached) {
-      await compileDeps(cwd)
-      await save(cwd)
-    }
-
-  } catch (error) {
-    if (error instanceof Error) core.setFailed(error.message)
+  if (!cached) {
+    await compileDeps(cwd)
+    await save(cwd)
   }
 }
 
