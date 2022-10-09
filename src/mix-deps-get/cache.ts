@@ -25,11 +25,13 @@ export const getCacheKey = async (cwd: string): Promise<string> => {
     utils.getOtpVersion(),
     getDepsPath(cwd),
     getMixLockHash(cwd),
-  ]).then(parts => parts.join('--'))
+  ]).then((parts) => parts.join('--'))
 }
 
 export const getDepsPath = async (cwd: string): Promise<string> => {
-  const result = await utils.execElixir('IO.puts(Mix.Project.deps_path())', { cwd })
+  const result = await utils.execElixir('IO.puts(Mix.Project.deps_path())', {
+    cwd,
+  })
 
   if (result.exitCode === 0) {
     const full = result.stdout.replace('\n', '')

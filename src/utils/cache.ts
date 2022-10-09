@@ -1,10 +1,14 @@
 import * as core from '@actions/core'
 import * as rawCache from '@actions/cache'
 
-export const restoreCache = async (paths: string[], key: string, restoreKeys: string[]): Promise<boolean> => {
+export const restoreCache = async (
+  paths: string[],
+  key: string,
+  restoreKeys: string[]
+): Promise<boolean> => {
   core.debug(key)
   if (!rawCache.isFeatureAvailable()) {
-    core.warning("@actions/cache feature not available")
+    core.warning('@actions/cache feature not available')
     return false
   }
 
@@ -12,10 +16,13 @@ export const restoreCache = async (paths: string[], key: string, restoreKeys: st
   return Boolean(restoredKey)
 }
 
-export const saveCache = async (paths: string[], key: string): Promise<void> => {
+export const saveCache = async (
+  paths: string[],
+  key: string
+): Promise<void> => {
   core.debug(key)
   if (!rawCache.isFeatureAvailable()) {
-    core.warning("@actions/cache feature not available")
+    core.warning('@actions/cache feature not available')
     return
   }
 

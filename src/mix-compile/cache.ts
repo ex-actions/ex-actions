@@ -28,12 +28,15 @@ export const getCacheKey = async (cwd: string): Promise<string> => {
     getDestinationBuildPath(cwd),
     getConfigFilesHash(cwd),
     getSrcFilesHash(cwd),
-  ]).then(parts => parts.join('--'))
+  ]).then((parts) => parts.join('--'))
 }
 
 export const getCompiledBuildPath = async (cwd: string): Promise<string> => {
   const env = { ...process.env, MIX_BUILD_ROOT: APP_BUILD_ROOT }
-  const result = await utils.execElixir('IO.puts(Mix.Project.build_path)', { cwd, env })
+  const result = await utils.execElixir('IO.puts(Mix.Project.build_path)', {
+    cwd,
+    env,
+  })
   if (result.exitCode === 0) {
     const fullPath = result.stdout.replace('\n', '')
     return fullPath.replace(process.cwd(), '').replace(/^\//, '')
@@ -43,7 +46,9 @@ export const getCompiledBuildPath = async (cwd: string): Promise<string> => {
 }
 
 export const getDestinationBuildPath = async (cwd: string): Promise<string> => {
-  const result = await utils.execElixir('IO.puts(Mix.Project.build_path)', { cwd })
+  const result = await utils.execElixir('IO.puts(Mix.Project.build_path)', {
+    cwd,
+  })
   if (result.exitCode === 0) {
     const fullPath = result.stdout.replace('\n', '')
     return fullPath.replace(process.cwd(), '').replace(/^\//, '')
@@ -74,7 +79,7 @@ export const getConfigFilesHash = async (cwd: string): Promise<string> => {
   |> IO.puts()
   `
   const result = await utils.execElixir(script, { cwd })
-  return result.stdout.replace("\n", '')
+  return result.stdout.replace('\n', '')
 }
 
 export const getSrcFilesHash = async (cwd: string): Promise<string> => {
@@ -128,5 +133,5 @@ export const getSrcFilesHash = async (cwd: string): Promise<string> => {
   `
 
   const result = await utils.execElixir(script, { cwd })
-  return result.stdout.replace("\n", '')
+  return result.stdout.replace('\n', '')
 }

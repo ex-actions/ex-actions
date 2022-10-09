@@ -5,7 +5,7 @@ const DEFAULT_OPTIONS: string[] = [
   '--no-deps-check',
   '--no-archives-check',
   '--no-start',
-  '--no-elixir-version-check'
+  '--no-elixir-version-check',
 ]
 
 const SCRIPT_PREFIX: string = `
@@ -15,6 +15,13 @@ const SCRIPT_PREFIX: string = `
 
 `
 
-export const execElixir = async (script: string, opts?: object): Promise<ExecResponse> => {
-  return await exec('mix', ['run', '-e', SCRIPT_PREFIX + script, ...DEFAULT_OPTIONS], opts)
+export const execElixir = async (
+  script: string,
+  opts?: object
+): Promise<ExecResponse> => {
+  return await exec(
+    'mix',
+    ['run', '-e', SCRIPT_PREFIX + script, ...DEFAULT_OPTIONS],
+    opts
+  )
 }

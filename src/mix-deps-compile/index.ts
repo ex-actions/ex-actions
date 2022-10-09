@@ -1,7 +1,12 @@
 import * as io from '@actions/io'
 import * as core from '@actions/core'
 import { exec, ExecResponse, checks } from '../utils'
-import { restore, save, getDestinationBuildPath, getCompiledBuildPath } from './cache'
+import {
+  restore,
+  save,
+  getDestinationBuildPath,
+  getCompiledBuildPath,
+} from './cache'
 import { DEPS_BUILD_ROOT } from '../constants'
 
 export async function mixDepsCompile(): Promise<void> {

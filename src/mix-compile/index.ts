@@ -3,7 +3,12 @@ import * as io from '@actions/io'
 import * as core from '@actions/core'
 import * as glob from '@actions/glob'
 import { exec, ExecResponse, checks } from '../utils'
-import { restore, save, getDestinationBuildPath, getCompiledBuildPath } from './cache'
+import {
+  restore,
+  save,
+  getDestinationBuildPath,
+  getCompiledBuildPath,
+} from './cache'
 import { APP_BUILD_ROOT } from '../constants'
 
 export async function mixCompile(): Promise<void> {
@@ -39,8 +44,11 @@ const compileApp = async (cwd: string): Promise<void> => {
   const files = await globber.glob()
   console.log(files)
   await Promise.all(
-    files.map(f => {
-      const relativePath = f.replace(process.cwd(), '').replace(buildPath, '').replace('//', '')
+    files.map((f) => {
+      const relativePath = f
+        .replace(process.cwd(), '')
+        .replace(buildPath, '')
+        .replace('//', '')
       io.rmRF(relativePath)
     })
   )

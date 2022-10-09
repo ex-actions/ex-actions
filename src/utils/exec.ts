@@ -1,5 +1,5 @@
 import * as core from '@actions/core'
-import {exec as rawExec} from '@actions/exec'
+import { exec as rawExec } from '@actions/exec'
 
 export interface ExecResponse {
   stderr: string
@@ -7,7 +7,11 @@ export interface ExecResponse {
   exitCode: number
 }
 
-export const exec = async (command: string, args?: string[], opts?: object): Promise<ExecResponse> => {
+export const exec = async (
+  command: string,
+  args?: string[],
+  opts?: object
+): Promise<ExecResponse> => {
   core.debug(`command: ${command} ${args}`)
   if (opts) core.debug(`opts: ${JSON.stringify({ ...opts, env: {} })}`)
 
@@ -23,7 +27,7 @@ export const exec = async (command: string, args?: string[], opts?: object): Pro
         stderr += data.toString()
       },
     },
-    ...opts
+    ...opts,
   }
 
   const exitCode = await rawExec(command, args, options)

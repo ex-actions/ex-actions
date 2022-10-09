@@ -27,7 +27,6 @@ export const mixInstalled = async (): Promise<void> => {
   }
 }
 
-
 export const hexInstalled = async (): Promise<void> => {
   const result = await exec('mix', ['hex.info'])
 
@@ -36,8 +35,20 @@ export const hexInstalled = async (): Promise<void> => {
   }
 }
 
-export const inMixProject= async (cwd: string): Promise<void> => {
-  const result = await exec('mix', ['run', '-e', 'Mix.Project.get!()', '--no-compile', '--no-deps-check', '--no-archives-check', '--no-start'], { cwd })
+export const inMixProject = async (cwd: string): Promise<void> => {
+  const result = await exec(
+    'mix',
+    [
+      'run',
+      '-e',
+      'Mix.Project.get!()',
+      '--no-compile',
+      '--no-deps-check',
+      '--no-archives-check',
+      '--no-start',
+    ],
+    { cwd }
+  )
 
   if (result.exitCode !== 0) {
     throw new Error(`mix project not found in ${cwd}`)
@@ -48,4 +59,3 @@ export const hasMixLock = async (cwd: string): Promise<void> => {
   const lockPath = path.join(cwd, 'mix.lock')
   await access(lockPath, constants.F_OK)
 }
-
