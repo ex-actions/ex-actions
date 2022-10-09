@@ -61999,6 +61999,7 @@ const save = (cwd) => __awaiter(void 0, void 0, void 0, function* () {
 exports.save = save;
 const getCacheKey = (cwd) => __awaiter(void 0, void 0, void 0, function* () {
     return Promise.all([
+        'cache-deps',
         utils.getPlatform(),
         utils.getArch(),
         utils.getElixirVersion(),
@@ -62190,6 +62191,7 @@ exports.saveCache = exports.restoreCache = void 0;
 const core = __importStar(__nccwpck_require__(2186));
 const rawCache = __importStar(__nccwpck_require__(7799));
 const restoreCache = (paths, key, restoreKeys) => __awaiter(void 0, void 0, void 0, function* () {
+    core.debug(key);
     if (!rawCache.isFeatureAvailable()) {
         core.warning("@actions/cache feature not available");
         return false;
@@ -62199,6 +62201,7 @@ const restoreCache = (paths, key, restoreKeys) => __awaiter(void 0, void 0, void
 });
 exports.restoreCache = restoreCache;
 const saveCache = (paths, key) => __awaiter(void 0, void 0, void 0, function* () {
+    core.debug(key);
     if (!rawCache.isFeatureAvailable()) {
         core.warning("@actions/cache feature not available");
         return;
@@ -62357,7 +62360,7 @@ const exec_1 = __nccwpck_require__(1514);
 const exec = (command, args, opts) => __awaiter(void 0, void 0, void 0, function* () {
     core.debug(`command: ${command} ${args}`);
     if (opts)
-        core.debug(`opts: ${JSON.stringify(opts)}`);
+        core.debug(`opts: ${JSON.stringify(Object.assign(Object.assign({}, opts), { env: {} }))}`);
     let stdout = '';
     let stderr = '';
     const options = Object.assign({ listeners: {
