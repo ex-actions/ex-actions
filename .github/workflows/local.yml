@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
 
 env:
-  elixir-version: "1.14.0"
-  otp-version: "25.0.4"
-  working-directory: "test_apps/test_umbrella"
+  elixir-version: '1.14.0'
+  otp-version: '25.0.4'
+  working-directory: 'test_apps/test_umbrella'
   MIX_ENV: test
 
 jobs:

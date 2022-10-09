@@ -1,9 +1,7 @@
-erlang_lib
-=====
+# erlang_lib
 
 An OTP library
 
-Build
------
+## Build
 
     $ rebar3 compile

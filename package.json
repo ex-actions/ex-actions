@@ -5,14 +5,13 @@
   "description": "TypeScript template action",
   "main": "src/setup/entry.ts",
   "scripts": {
-    "format": "prettier --write '**/*.ts'",
-    "format-check": "prettier --check '**/*.ts'",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "lint": "eslint src/**/*.ts",
     "build": "ncc build src/$npm_config_action/entry.ts -o actions/$npm_config_action/dist --source-map --license licenses.txt",
     "watch": "npm run build -- -w",
     "test": "jest",
-    "build:all": "npm run build --action=mix-deps-get && npm run build --action=mix-deps-compile && npm run build --action=mix-compile && npm run build --action=setup",
-    "all": "npm run build && npm run format && npm run lint && npm run package && npm test"
+    "build:all": "npm run build --action=mix-deps-get && npm run build --action=mix-deps-compile && npm run build --action=mix-compile && npm run build --action=setup"
   },
   "prettier": {
     "semi": false,

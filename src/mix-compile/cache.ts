@@ -1,3 +1,4 @@
+import * as core from '@actions/core'
 import * as glob from '@actions/glob'
 import * as utils from '../utils'
 import { APP_BUILD_ROOT } from '../constants'
@@ -27,6 +28,7 @@ export const getCacheKey = async (cwd: string): Promise<string> => {
     getMixLockHash(cwd),
     getDestinationBuildPath(cwd),
     getConfigFilesHash(cwd),
+    core.getInput('cache-key'),
     getSrcFilesHash(cwd),
   ])
 

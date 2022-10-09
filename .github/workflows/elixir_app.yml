@@ -4,8 +4,8 @@ on:
   workflow_dispatch:
 
 env:
-  elixir-version: "1.14.0"
-  otp-version: "25.0.4"
+  elixir-version: '1.14.0'
+  otp-version: '25.0.4'
   MIX_ENV: test
 
 jobs:
@@ -19,7 +19,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: "./setup"
+      - uses: './setup'
         with:
           working-directory: 'test_apps/elixir_app'
 

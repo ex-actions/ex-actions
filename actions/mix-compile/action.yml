@@ -1,17 +1,18 @@
-name: 'benstepp/elixir-actions/mix-compile'
+name: 'mix compile'
+description: 'Compiles and caches your mix application.'
 author: 'Benjamin Stepp'
-description: 'Compiles and Caches your application'
 
 inputs:
+  cache-key:
+    description: 'If your application has other files that affect the cache you
+      can add a hash of them here. Can also be passed to "bust" the current cache.'
+    required: false
+    default: 'key'
   working-directory:
     description: 'Path to your elixir application. This can be configured if
       your elixir application is in a subdirectory, for example if you are in a
       monorepo.'
     required: false
-  cache-key:
-    description: 'Additional Cache Key to use in cache key generation.'
-    required: false
-    default: 'key'
 
 runs:
   using: 'node16'

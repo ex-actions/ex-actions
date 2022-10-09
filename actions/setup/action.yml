@@ -1,12 +1,13 @@
-name: 'benstepp/elixir-actions/setup'
-author: 'Ben Stepp'
-description: 'Installs elixir, install depenencies, compile dependencies, compile application'
+name: 'Setup mix project'
+description: 'Setup a mix project environment by installing dependencies and compiling the application.'
+author: 'Benjamin Stepp'
 
 inputs:
   cache-key:
     description: 'If your application has other files that affect the cache you
       can add a hash of them here. Can also be passed to "bust" the current cache.'
     required: false
+    default: 'key'
   working-directory:
     description: 'Path to your elixir application. This can be configured if
       your elixir application is in a subdirectory, for example if you are in a

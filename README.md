@@ -6,14 +6,14 @@ located here too.
 
 ## Design Goals
 
-* Almost zero configuration. The user should point to their mix project, and
+- Almost zero configuration. The user should point to their mix project, and
   the actions should be able to handle the rest.
 
-* Cache as much as possible. Fast CI/CD makes engineers happy.
+- Cache as much as possible. Fast CI/CD makes engineers happy.
 
-* No footguns. loose versioning, missing lock files, etc should error.
+- No footguns. loose versioning, missing lock files, etc should error.
 
-* Support most commonly used Mix.compilers()
+- Support most commonly used Mix.compilers()
 
 ## Basic Usage
 
@@ -52,5 +52,4 @@ is not guarunteed.
 
 # Not Recommended at all
 - uses: benstepp/elixir-actions/setup@build
-
 ```
