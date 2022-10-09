@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "description": "TypeScript template action",
-  "main": "src/main.ts",
+  "main": "src/setup/entry.ts",
   "scripts": {
     "format": "prettier --write '**/*.ts'",
     "format-check": "prettier --check '**/*.ts'",
@@ -13,6 +13,10 @@
     "test": "jest",
     "build:all": "npm run build --action=mix-deps-get && npm run build --action=mix-deps-compile && npm run build --action=mix-compile && npm run build --action=setup",
     "all": "npm run build && npm run format && npm run lint && npm run package && npm test"
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": true
   },
   "repository": {
     "type": "git",
