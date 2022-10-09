@@ -9,7 +9,7 @@ export interface ExecResponse {
 
 export const exec = async (command: string, args?: string[], opts?: object): Promise<ExecResponse> => {
   core.debug(`command: ${command} ${args}`)
-  if (opts) core.debug(`opts: ${JSON.stringify(opts)}`)
+  if (opts) core.debug(`opts: ${JSON.stringify({ ...opts, env: {} })}`)
 
   let stdout: string = ''
   let stderr: string = ''

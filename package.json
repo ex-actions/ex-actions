@@ -11,7 +11,7 @@
     "build": "ncc build src/$npm_config_action/entry.ts -o actions/$npm_config_action/dist --source-map --license licenses.txt",
     "watch": "npm run build -- -w",
     "test": "jest",
-    "build:all": "npm run build --action=mix-deps-get && npm run build --action=mix-deps-compile",
+    "build:all": "npm run build --action=mix-deps-get && npm run build --action=mix-deps-compile && npm run build --action=mix-compile",
     "all": "npm run build && npm run format && npm run lint && npm run package && npm test"
   },
   "repository": {

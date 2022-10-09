@@ -53,11 +53,13 @@ jobs:
         with:
           working-directory: 'test_apps/elixir_app'
 
+      - name: Compile App
+        uses: ./actions/mix-compile
+        with:
+          working-directory: 'test_apps/elixir_app'
+
       - name: test
         shell: bash
         run: |
-          echo "hi"
           cd test_apps/elixir_app
-          pwd
-          ls -lah
-          ls -lah _build
+          mix test

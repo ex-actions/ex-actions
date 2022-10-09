@@ -19,6 +19,7 @@ export const save = async (cwd: string): Promise<void> => {
 
 export const getCacheKey = async (cwd: string): Promise<string> => {
   return Promise.all([
+    'cache-compiled-deps',
     utils.getPlatform(),
     utils.getArch(),
     utils.getElixirVersion(),
