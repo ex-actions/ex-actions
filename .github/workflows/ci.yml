@@ -1,0 +1,87 @@
+name: 'CI'
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: ['main']
+  push:
+    branches: ['main']
+
+env:
+  MIX_ENV: 'test'
+  elixir-version: '1.14.0'
+  otp-version: '25.0.4'
+  runs-on: 'ubuntu-latest'
+
+defaults:
+  run:
+
+jobs:
+  setup:
+    name: 'Setup Node.js'
+    runs-on: ${{ env.runs-on }}
+    needs: ['setup']
+    steps:
+      - uses: 'actions/checkout@v3'
+
+      - uses: 'actions/setup-node@v3'
+        with:
+          node-version: '16'
+          cache: 'npm'
+
+      - name: 'npm ci'
+        run: 'npm ci'
+
+  format:
+    name: 'prettier'
+    runs-on: ${{ env.runs-on }}
+    needs: ['setup']
+    steps:
+      - uses: 'actions/checkout@v3'
+
+      - uses: 'actions/setup-node@v3'
+        with:
+          node-version: '16'
+          cache: 'npm'
+
+      - name: 'npm ci'
+        run: 'npm ci'
+
+      - name: 'npm run format:check'
+        run: 'npm run format:check'
+
+  lint:
+    name: 'eslint'
+    runs-on: ${{ env.runs-on }}
+    needs: ['setup']
+    steps:
+      - uses: 'actions/checkout@v3'
+
+      - uses: 'actions/setup-node@v3'
+        with:
+          node-version: '16'
+          cache: 'npm'
+
+      - name: 'npm ci'
+        run: 'npm ci'
+
+      - name: 'npm run lint'
+        run: 'npm run lint'
+
+  build:
+    name: 'build'
+    runs-on: ${{ env.runs-on }}
+    needs: ['format', 'lint']
+    steps:
+      - uses: 'actions/checkout@v3'
+
+      - uses: 'actions/setup-node@v3'
+        with:
+          node-version: '16'
+          cache: 'npm'
+
+      - name: 'npm ci'
+        run: 'npm ci'
+
+      - name: 'npm run build:all'
+        run: 'npm run build:all'
