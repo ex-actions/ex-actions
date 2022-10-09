@@ -13,9 +13,6 @@ env:
   otp-version: '25.0.4'
   runs-on: 'ubuntu-latest'
 
-defaults:
-  run:
-
 jobs:
   setup:
     name: 'Setup Node.js'
