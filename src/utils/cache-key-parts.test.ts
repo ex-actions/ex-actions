@@ -1,5 +1,7 @@
 import * as execModule from './exec'
+import * as glob from '@actions/glob'
 import * as parts from './cache-key-parts'
+import { mockHash } from 'test-helpers'
 import os from 'os'
 
 jest.mock('os')
@@ -277,5 +279,25 @@ describe('getOtpVersion', () => {
 
     expect(await parts.getOtpVersion()).toBe('25.0-rc3')
     expect(exec).toHaveBeenCalledWith('mix', ['hex.info'])
+  })
+})
+
+describe('getMixLockHash', () => {
+  test('calls glob with a working-directory', async () => {
+    const hashFiles = jest.spyOn(glob, 'hashFiles')
+    const hash = mockHash()
+    hashFiles.mockResolvedValue(hash)
+
+    expect(await parts.getMixLockHash('backend')).toBe(hash)
+    expect(hashFiles).toHaveBeenCalledWith('backend/mix.lock')
+  })
+
+  test('calls glob without a working-directory', async () => {
+    const hashFiles = jest.spyOn(glob, 'hashFiles')
+    const hash = mockHash()
+    hashFiles.mockResolvedValue(hash)
+
+    expect(await parts.getMixLockHash('')).toBe(hash)
+    expect(hashFiles).toHaveBeenCalledWith('mix.lock')
   })
 })

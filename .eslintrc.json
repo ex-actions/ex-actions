@@ -54,6 +54,14 @@
     "@typescript-eslint/type-annotation-spacing": "error",
     "@typescript-eslint/unbound-method": "error"
   },
+  "settings": {
+    "import/resolver": {
+      "alias": {
+        "map": [["test-helpers", "./src/test-helpers"]],
+        "extensions": [".ts", ".js"]
+      }
+    }
+  },
   "env": {
     "node": true,
     "es6": true,

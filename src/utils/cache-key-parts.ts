@@ -1,3 +1,5 @@
+import * as glob from '@actions/glob'
+import * as path from 'path'
 import { exec } from './exec'
 import os from 'os'
 
@@ -38,4 +40,10 @@ const findVersion = async (search: string): Promise<string> => {
       `unable to determine ${name} version from hex.info ${hexInfo}`
     )
   }
+}
+
+export const getMixLockHash = async (cwd: string): Promise<string> => {
+  const lockPath = path.join(cwd, 'mix.lock')
+  const hash: string = await glob.hashFiles(lockPath)
+  return hash
 }

@@ -1,8 +1,6 @@
 import * as core from '@actions/core'
-import * as glob from '@actions/glob'
 import * as utils from '../utils'
 import { APP_BUILD_ROOT } from '../constants'
-import path from 'path'
 
 export const restore = async (cwd: string): Promise<boolean> => {
   const key = await getCacheKey(cwd)
@@ -25,7 +23,7 @@ export const getCacheKey = async (cwd: string): Promise<string> => {
     utils.getArch(),
     utils.getElixirVersion(),
     utils.getOtpVersion(),
-    getMixLockHash(cwd),
+    utils.getMixLockHash(cwd),
     getDestinationBuildPath(cwd),
     getConfigFilesHash(cwd),
     core.getInput('cache-key'),
@@ -59,12 +57,6 @@ export const getDestinationBuildPath = async (cwd: string): Promise<string> => {
   } else {
     throw new Error('unable to find Mix.Project.build_path()')
   }
-}
-
-export const getMixLockHash = async (cwd: string): Promise<string> => {
-  const lockPath = path.join(cwd, 'mix.lock')
-  const hash: string = await glob.hashFiles(lockPath)
-  return hash
 }
 
 export const getConfigFilesHash = async (cwd: string): Promise<string> => {
