@@ -19,6 +19,8 @@ export async function mixDepsCompile(skipChecks?: boolean): Promise<void> {
     await compileDeps(cwd)
     await save(cwd)
   }
+
+  await moveCompiled(cwd)
 }
 
 const compileDeps = async (cwd: string): Promise<void> => {
@@ -27,7 +29,9 @@ const compileDeps = async (cwd: string): Promise<void> => {
   if (compile.exitCode !== 0) {
     throw new Error(`mix deps.compile failed to run`)
   }
+}
 
+const moveCompiled = async (cwd: string): Promise<void> => {
   const srcPath = await getCompiledBuildPath(cwd)
   const buildPath = await getDestinationBuildPath(cwd)
 

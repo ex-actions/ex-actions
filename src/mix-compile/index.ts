@@ -18,28 +18,34 @@ export async function mixCompile(skipChecks?: boolean): Promise<void> {
   const cached = await restore(cwd)
 
   if (!cached) {
+    await moveCompiledDeps(cwd)
     await compileApp(cwd)
+    await deleteCompiledDeps(cwd)
     await save(cwd)
   }
+
+  await moveCompiledApp(cwd)
+}
+
+const moveCompiledDeps = async (cwd: string): Promise<void> => {
+  const srcPath = await getCompiledBuildPath(cwd)
+  const buildPath = await getDestinationBuildPath(cwd)
+  await io.mkdirP(srcPath)
+  await io.cp(`${buildPath}/.`, srcPath, { recursive: true })
 }
 
 const compileApp = async (cwd: string): Promise<void> => {
-  const srcPath = await getCompiledBuildPath(cwd)
-  const buildPath = await getDestinationBuildPath(cwd)
-
-  // copy built dependencies into temp folder
-  await io.mkdirP(srcPath)
-  await io.cp(`${buildPath}/.`, srcPath, { recursive: true })
-  await exec('ls -lah', [], { cwd: `${srcPath}/test/lib` })
-
-  // compile app into the temp folder
   const env = { ...process.env, MIX_BUILD_ROOT: APP_BUILD_ROOT }
   const compile = await exec('mix', ['compile'], { cwd, env })
   if (compile.exitCode !== 0) {
     throw new Error(`mix compile failed to run`)
   }
+}
 
-  // delete dependencies from temp folder
+const deleteCompiledDeps = async (cwd: string): Promise<void> => {
+  const srcPath = await getCompiledBuildPath(cwd)
+  const buildPath = await getDestinationBuildPath(cwd)
+
   const globber = await glob.create(`${srcPath}/**`)
   const files = await globber.glob()
   await Promise.all(
@@ -51,7 +57,11 @@ const compileApp = async (cwd: string): Promise<void> => {
       io.rmRF(relativePath)
     })
   )
+}
 
-  // move compiled app into the destination
+const moveCompiledApp = async (cwd: string): Promise<void> => {
+  const srcPath = await getCompiledBuildPath(cwd)
+  const buildPath = await getDestinationBuildPath(cwd)
+  await io.mkdirP(buildPath)
   await io.cp(`${srcPath}/.`, buildPath, { recursive: true })
 }
