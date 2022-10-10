@@ -1,9 +1,8 @@
 {
-  "name": "typescript-action",
+  "name": "ex-actions",
   "version": "0.0.0",
-  "private": true,
-  "description": "TypeScript template action",
-  "main": "src/setup/entry.ts",
+  "description": "Github Actions for Elixir projects.",
+  "main": "src/setup-mix/entry.ts",
   "scripts": {
     "format": "prettier --write .",
     "format:check": "prettier --check .",
@@ -11,7 +10,7 @@
     "build": "ncc build src/$npm_config_action/entry.ts -o actions/$npm_config_action/dist --source-map --license licenses.txt",
     "watch": "npm run build -- -w",
     "test": "jest",
-    "build:all": "npm run build --action=mix-deps-get && npm run build --action=mix-deps-compile && npm run build --action=mix-compile && npm run build --action=setup"
+    "build:all": "npm run build --action=mix-deps-get && npm run build --action=mix-deps-compile && npm run build --action=mix-compile && npm run build --action=setup-mix"
   },
   "prettier": {
     "semi": false,
@@ -22,11 +21,9 @@
     "url": "git+https://github.com/actions/typescript-action.git"
   },
   "keywords": [
-    "actions",
-    "node",
-    "setup"
+    "actions"
   ],
-  "author": "",
+  "author": "Benjamin Stepp",
   "license": "MIT",
   "dependencies": {
     "@actions/cache": "^3.0.4",
