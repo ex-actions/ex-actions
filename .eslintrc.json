@@ -12,6 +12,7 @@
     "eslint-comments/no-use": "off",
     "import/no-namespace": "off",
     "no-unused-vars": "off",
+    "filenames/match-regex": ["error", "^[a-z0-9-]+(.d|.config|.test)?$"],
     "@typescript-eslint/no-unused-vars": "error",
     "@typescript-eslint/explicit-member-accessibility": [
       "error",

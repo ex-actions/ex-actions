@@ -58,10 +58,28 @@ jobs:
       - name: 'npm run lint'
         run: 'npm run lint'
 
+  test:
+    name: 'jest'
+    runs-on: 'ubuntu-latest'
+    needs: ['setup']
+    steps:
+      - uses: 'actions/checkout@v3'
+
+      - uses: 'actions/setup-node@v3'
+        with:
+          node-version: '16'
+          cache: 'npm'
+
+      - name: 'npm ci'
+        run: 'npm ci'
+
+      - name: 'npm run test'
+        run: 'npm run test'
+
   build:
     name: 'build'
     runs-on: 'ubuntu-latest'
-    needs: ['format', 'lint']
+    needs: ['format', 'lint', 'test']
     steps:
       - uses: 'actions/checkout@v3'
 

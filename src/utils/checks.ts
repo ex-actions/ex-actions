@@ -36,6 +36,8 @@ export const hexInstalled = async (): Promise<void> => {
 }
 
 export const inMixProject = async (cwd: string): Promise<void> => {
+  const options: { cwd?: string } = {}
+  if (cwd !== '') options.cwd = cwd
   const result = await exec(
     'mix',
     [
@@ -47,11 +49,13 @@ export const inMixProject = async (cwd: string): Promise<void> => {
       '--no-archives-check',
       '--no-start',
     ],
-    { cwd }
+    options
   )
 
   if (result.exitCode !== 0) {
-    throw new Error(`mix project not found in ${cwd}`)
+    let message = 'mix project not found'
+    if (cwd) message += ` in ${cwd}`
+    throw new Error(message)
   }
 }
 
