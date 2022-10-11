@@ -119,12 +119,12 @@ jobs:
           path: 'actions'
 
   test_apps:
-    name: 'test apps'
+    name: 'Test Mix Projects'
     runs-on: 'ubuntu-latest'
     needs: ['build']
     strategy:
       matrix:
-        app: ['elixir_app']
+        app: ['elixir_app', 'elixir_umbrella', 'erlang_lib', 'test_umbrella']
     defaults:
       run:
         working-directory: 'test_apps/${{ matrix.app }}'
