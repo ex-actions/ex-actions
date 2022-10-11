@@ -470,7 +470,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(2186));
 const exec = __importStar(__nccwpck_require__(1514));
 const glob = __importStar(__nccwpck_require__(1597));
-const io = __importStar(__nccwpck_require__(7351));
+const io = __importStar(__nccwpck_require__(7436));
 const fs = __importStar(__nccwpck_require__(5747));
 const path = __importStar(__nccwpck_require__(5622));
 const semver = __importStar(__nccwpck_require__(5911));
@@ -1065,7 +1065,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const exec_1 = __nccwpck_require__(1514);
-const io = __importStar(__nccwpck_require__(7351));
+const io = __importStar(__nccwpck_require__(7436));
 const fs_1 = __nccwpck_require__(5747);
 const path = __importStar(__nccwpck_require__(5622));
 const utils = __importStar(__nccwpck_require__(1518));
@@ -2570,7 +2570,7 @@ module.exports = v4;
 
 /***/ }),
 
-/***/ 5241:
+/***/ 7351:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -2704,7 +2704,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getIDToken = exports.getState = exports.saveState = exports.group = exports.endGroup = exports.startGroup = exports.info = exports.notice = exports.warning = exports.error = exports.debug = exports.isDebug = exports.setFailed = exports.setCommandEcho = exports.setOutput = exports.getBooleanInput = exports.getMultilineInput = exports.getInput = exports.addPath = exports.setSecret = exports.exportVariable = exports.ExitCode = void 0;
-const command_1 = __nccwpck_require__(5241);
+const command_1 = __nccwpck_require__(7351);
 const file_command_1 = __nccwpck_require__(717);
 const utils_1 = __nccwpck_require__(5278);
 const os = __importStar(__nccwpck_require__(2087));
@@ -3712,7 +3712,7 @@ const os = __importStar(__nccwpck_require__(2087));
 const events = __importStar(__nccwpck_require__(8614));
 const child = __importStar(__nccwpck_require__(3129));
 const path = __importStar(__nccwpck_require__(5622));
-const io = __importStar(__nccwpck_require__(7351));
+const io = __importStar(__nccwpck_require__(7436));
 const ioUtil = __importStar(__nccwpck_require__(1962));
 const timers_1 = __nccwpck_require__(8213);
 /* eslint-disable @typescript-eslint/unbound-method */
@@ -6438,7 +6438,7 @@ exports.getCmdPath = getCmdPath;
 
 /***/ }),
 
-/***/ 7351:
+/***/ 7436:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -61988,13 +61988,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getMixLockHash = exports.getDestinationBuildPath = exports.getCompiledBuildPath = exports.getCacheKey = exports.save = exports.restore = void 0;
-const path_1 = __importDefault(__nccwpck_require__(5622));
-const glob = __importStar(__nccwpck_require__(8090));
+exports.getDestinationBuildPath = exports.getCompiledBuildPath = exports.getCacheKey = exports.save = exports.restore = void 0;
 const utils = __importStar(__nccwpck_require__(6252));
 const constants_1 = __nccwpck_require__(9042);
 const restore = (cwd) => __awaiter(void 0, void 0, void 0, function* () {
@@ -62012,20 +62007,24 @@ const save = (cwd) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.save = save;
 const getCacheKey = (cwd) => __awaiter(void 0, void 0, void 0, function* () {
-    return Promise.all([
+    const parts = yield Promise.all([
         'cache-compiled-deps',
         utils.getPlatform(),
         utils.getArch(),
         utils.getElixirVersion(),
         utils.getOtpVersion(),
-        (0, exports.getMixLockHash)(cwd),
+        utils.getMixLockHash(cwd),
         (0, exports.getDestinationBuildPath)(cwd),
-    ]).then(parts => parts.join('--'));
+    ]);
+    return parts.join('--');
 });
 exports.getCacheKey = getCacheKey;
 const getCompiledBuildPath = (cwd) => __awaiter(void 0, void 0, void 0, function* () {
     const env = Object.assign(Object.assign({}, process.env), { MIX_BUILD_ROOT: constants_1.DEPS_BUILD_ROOT });
-    const result = yield utils.execElixir('IO.puts(Mix.Project.build_path)', { cwd, env });
+    const result = yield utils.execElixir('IO.puts(Mix.Project.build_path)', {
+        cwd,
+        env,
+    });
     if (result.exitCode === 0) {
         const fullPath = result.stdout.replace('\n', '');
         return fullPath.replace(process.cwd(), '').replace(/^\//, '');
@@ -62036,7 +62035,9 @@ const getCompiledBuildPath = (cwd) => __awaiter(void 0, void 0, void 0, function
 });
 exports.getCompiledBuildPath = getCompiledBuildPath;
 const getDestinationBuildPath = (cwd) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield utils.execElixir('IO.puts(Mix.Project.build_path)', { cwd });
+    const result = yield utils.execElixir('IO.puts(Mix.Project.build_path)', {
+        cwd,
+    });
     if (result.exitCode === 0) {
         const fullPath = result.stdout.replace('\n', '');
         return fullPath.replace(process.cwd(), '').replace(/^\//, '');
@@ -62046,12 +62047,58 @@ const getDestinationBuildPath = (cwd) => __awaiter(void 0, void 0, void 0, funct
     }
 });
 exports.getDestinationBuildPath = getDestinationBuildPath;
-const getMixLockHash = (cwd) => __awaiter(void 0, void 0, void 0, function* () {
-    const lockPath = path_1.default.join(cwd, 'mix.lock');
-    const hash = yield glob.hashFiles(lockPath);
-    return hash;
+
+
+/***/ }),
+
+/***/ 8124:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
 });
-exports.getMixLockHash = getMixLockHash;
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const core = __importStar(__nccwpck_require__(2186));
+const index_1 = __nccwpck_require__(4923);
+function run() {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            yield (0, index_1.mixDepsCompile)();
+        }
+        catch (error) {
+            if (error instanceof Error)
+                core.setFailed(error.message);
+        }
+    });
+}
+run();
 
 
 /***/ }),
@@ -62090,36 +62137,34 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.run = void 0;
-const io = __importStar(__nccwpck_require__(7351));
+exports.mixDepsCompile = void 0;
 const core = __importStar(__nccwpck_require__(2186));
+const io = __importStar(__nccwpck_require__(7436));
 const utils_1 = __nccwpck_require__(6252);
 const cache_1 = __nccwpck_require__(3016);
 const constants_1 = __nccwpck_require__(9042);
-function run() {
+function mixDepsCompile(skipChecks) {
     return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const cwd = core.getInput('working-directory');
+        const cwd = core.getInput('working-directory');
+        if (!skipChecks)
             yield (0, utils_1.checks)(cwd);
-            const cached = yield (0, cache_1.restore)(cwd);
-            if (!cached) {
-                yield compileDeps(cwd);
-                yield (0, cache_1.save)(cwd);
-            }
+        const cached = yield (0, cache_1.restore)(cwd);
+        if (!cached) {
+            yield compileDeps(cwd);
+            yield (0, cache_1.save)(cwd);
         }
-        catch (error) {
-            if (error instanceof Error)
-                core.setFailed(error.message);
-        }
+        yield moveCompiled(cwd);
     });
 }
-exports.run = run;
+exports.mixDepsCompile = mixDepsCompile;
 const compileDeps = (cwd) => __awaiter(void 0, void 0, void 0, function* () {
     const env = Object.assign(Object.assign({}, process.env), { MIX_BUILD_ROOT: constants_1.DEPS_BUILD_ROOT });
     const compile = yield (0, utils_1.exec)('mix', ['deps.compile'], { cwd, env });
     if (compile.exitCode !== 0) {
         throw new Error(`mix deps.compile failed to run`);
     }
+});
+const moveCompiled = (cwd) => __awaiter(void 0, void 0, void 0, function* () {
     const srcPath = yield (0, cache_1.getCompiledBuildPath)(cwd);
     const buildPath = yield (0, cache_1.getDestinationBuildPath)(cwd);
     yield io.mkdirP(buildPath);
@@ -62134,6 +62179,25 @@ const compileDeps = (cwd) => __awaiter(void 0, void 0, void 0, function* () {
 
 "use strict";
 
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -62147,9 +62211,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getOtpVersion = exports.getElixirVersion = exports.getArch = exports.getPlatform = void 0;
-const os_1 = __importDefault(__nccwpck_require__(2087));
+exports.getMixLockHash = exports.getOtpVersion = exports.getElixirVersion = exports.getArch = exports.getPlatform = void 0;
+const glob = __importStar(__nccwpck_require__(8090));
+const path = __importStar(__nccwpck_require__(5622));
 const exec_1 = __nccwpck_require__(4690);
+const os_1 = __importDefault(__nccwpck_require__(2087));
 const getPlatform = () => os_1.default.platform();
 exports.getPlatform = getPlatform;
 const getArch = () => os_1.default.arch();
@@ -62164,14 +62230,13 @@ const getOtpVersion = () => __awaiter(void 0, void 0, void 0, function* () {
 exports.getOtpVersion = getOtpVersion;
 const findVersion = (search) => __awaiter(void 0, void 0, void 0, function* () {
     const hexInfo = yield (0, exec_1.exec)('mix', ['hex.info']);
-    const name = search.toLowerCase().replace(/\:/, '');
+    const name = search.toLowerCase().replace(/:/, '');
     if (hexInfo.exitCode !== 0) {
         throw new Error(`unable to run mix hex.info`);
     }
-    const line = hexInfo
-        .stdout
+    const line = hexInfo.stdout
         .split('\n')
-        .find(line => line.startsWith(search));
+        .find((l) => l.startsWith(search));
     if (typeof line === 'string') {
         const match = line.match(/\s+(.*)$/);
         if (Array.isArray(match) && match.length >= 2) {
@@ -62185,6 +62250,12 @@ const findVersion = (search) => __awaiter(void 0, void 0, void 0, function* () {
         throw new Error(`unable to determine ${name} version from hex.info ${hexInfo}`);
     }
 });
+const getMixLockHash = (cwd) => __awaiter(void 0, void 0, void 0, function* () {
+    const lockPath = path.join(cwd, 'mix.lock');
+    const hash = yield glob.hashFiles(lockPath);
+    return hash;
+});
+exports.getMixLockHash = getMixLockHash;
 
 
 /***/ }),
@@ -62229,7 +62300,7 @@ const rawCache = __importStar(__nccwpck_require__(7799));
 const restoreCache = (paths, key, restoreKeys) => __awaiter(void 0, void 0, void 0, function* () {
     core.debug(key);
     if (!rawCache.isFeatureAvailable()) {
-        core.warning("@actions/cache feature not available");
+        core.warning('@actions/cache feature not available');
         return false;
     }
     const restoredKey = yield rawCache.restoreCache(paths, key, restoreKeys);
@@ -62239,7 +62310,7 @@ exports.restoreCache = restoreCache;
 const saveCache = (paths, key) => __awaiter(void 0, void 0, void 0, function* () {
     core.debug(key);
     if (!rawCache.isFeatureAvailable()) {
-        core.warning("@actions/cache feature not available");
+        core.warning('@actions/cache feature not available');
         return;
     }
     yield rawCache.saveCache(paths, key);
@@ -62269,10 +62340,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.hasMixLock = exports.inMixProject = exports.hexInstalled = exports.mixInstalled = exports.elixirInstalled = exports.checks = void 0;
-const path_1 = __importDefault(__nccwpck_require__(5622));
-const node_fs_1 = __nccwpck_require__(3994);
 const promises_1 = __nccwpck_require__(3595);
+const node_fs_1 = __nccwpck_require__(3994);
 const exec_1 = __nccwpck_require__(4690);
+const path_1 = __importDefault(__nccwpck_require__(5622));
 const checks = (cwd) => __awaiter(void 0, void 0, void 0, function* () {
     yield (0, exports.elixirInstalled)();
     yield (0, exports.mixInstalled)();
@@ -62303,9 +62374,23 @@ const hexInstalled = () => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.hexInstalled = hexInstalled;
 const inMixProject = (cwd) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield (0, exec_1.exec)('mix', ['run', '-e', 'Mix.Project.get!()', '--no-compile', '--no-deps-check', '--no-archives-check', '--no-start'], { cwd });
+    const options = {};
+    if (cwd !== '')
+        options.cwd = cwd;
+    const result = yield (0, exec_1.exec)('mix', [
+        'run',
+        '-e',
+        'Mix.Project.get!()',
+        '--no-compile',
+        '--no-deps-check',
+        '--no-archives-check',
+        '--no-start',
+    ], options);
     if (result.exitCode !== 0) {
-        throw new Error(`mix project not found in ${cwd}`);
+        let message = 'mix project not found';
+        if (cwd)
+            message += ` in ${cwd}`;
+        throw new Error(message);
     }
 });
 exports.inMixProject = inMixProject;
@@ -62340,7 +62425,7 @@ const DEFAULT_OPTIONS = [
     '--no-deps-check',
     '--no-archives-check',
     '--no-start',
-    '--no-elixir-version-check'
+    '--no-elixir-version-check',
 ];
 const SCRIPT_PREFIX = `
   :logger
@@ -62687,19 +62772,13 @@ module.exports = require("zlib");
 /******/ 	if (typeof __nccwpck_require__ !== 'undefined') __nccwpck_require__.ab = __dirname + "/";
 /******/ 	
 /************************************************************************/
-var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be in strict mode.
-(() => {
-"use strict";
-var exports = __webpack_exports__;
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-const index_1 = __nccwpck_require__(4923);
-(0, index_1.run)();
-
-})();
-
-module.exports = __webpack_exports__;
+/******/ 	
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	// This entry module is referenced by other modules so it can't be inlined
+/******/ 	var __webpack_exports__ = __nccwpck_require__(8124);
+/******/ 	module.exports = __webpack_exports__;
+/******/ 	
 /******/ })()
 ;
 //# sourceMappingURL=index.js.map

@@ -1,6 +1,6 @@
-name: 'benstepp/elixir-actions/mix-deps-compile'
+name: 'mix deps.compile'
+description: 'Compiles and caches your mix application dependencies.'
 author: 'Benjamin Stepp'
-description: 'Compiles and Caches your application dependencies'
 
 inputs:
   working-directory:

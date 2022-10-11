@@ -62127,58 +62127,6 @@ exports.getSrcFilesHash = getSrcFilesHash;
 
 /***/ }),
 
-/***/ 238:
-/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
-
-"use strict";
-
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-const core = __importStar(__nccwpck_require__(2186));
-const index_1 = __nccwpck_require__(7709);
-function run() {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            yield (0, index_1.mixCompile)();
-        }
-        catch (error) {
-            if (error instanceof Error)
-                core.setFailed(error.message);
-        }
-    });
-}
-run();
-
-
-/***/ }),
-
 /***/ 7709:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
@@ -62268,6 +62216,377 @@ const moveCompiledApp = (cwd) => __awaiter(void 0, void 0, void 0, function* () 
     yield io.mkdirP(buildPath);
     yield io.cp(`${srcPath}/.`, buildPath, { recursive: true });
 });
+
+
+/***/ }),
+
+/***/ 3016:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getDestinationBuildPath = exports.getCompiledBuildPath = exports.getCacheKey = exports.save = exports.restore = void 0;
+const utils = __importStar(__nccwpck_require__(6252));
+const constants_1 = __nccwpck_require__(9042);
+const restore = (cwd) => __awaiter(void 0, void 0, void 0, function* () {
+    const key = yield (0, exports.getCacheKey)(cwd);
+    const buildPath = yield (0, exports.getCompiledBuildPath)(cwd);
+    const paths = [buildPath];
+    return yield utils.restoreCache(paths, key, []);
+});
+exports.restore = restore;
+const save = (cwd) => __awaiter(void 0, void 0, void 0, function* () {
+    const key = yield (0, exports.getCacheKey)(cwd);
+    const buildPath = yield (0, exports.getCompiledBuildPath)(cwd);
+    const paths = [buildPath];
+    return yield utils.saveCache(paths, key);
+});
+exports.save = save;
+const getCacheKey = (cwd) => __awaiter(void 0, void 0, void 0, function* () {
+    const parts = yield Promise.all([
+        'cache-compiled-deps',
+        utils.getPlatform(),
+        utils.getArch(),
+        utils.getElixirVersion(),
+        utils.getOtpVersion(),
+        utils.getMixLockHash(cwd),
+        (0, exports.getDestinationBuildPath)(cwd),
+    ]);
+    return parts.join('--');
+});
+exports.getCacheKey = getCacheKey;
+const getCompiledBuildPath = (cwd) => __awaiter(void 0, void 0, void 0, function* () {
+    const env = Object.assign(Object.assign({}, process.env), { MIX_BUILD_ROOT: constants_1.DEPS_BUILD_ROOT });
+    const result = yield utils.execElixir('IO.puts(Mix.Project.build_path)', {
+        cwd,
+        env,
+    });
+    if (result.exitCode === 0) {
+        const fullPath = result.stdout.replace('\n', '');
+        return fullPath.replace(process.cwd(), '').replace(/^\//, '');
+    }
+    else {
+        throw new Error('unable to find Mix.Project.build_path()');
+    }
+});
+exports.getCompiledBuildPath = getCompiledBuildPath;
+const getDestinationBuildPath = (cwd) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield utils.execElixir('IO.puts(Mix.Project.build_path)', {
+        cwd,
+    });
+    if (result.exitCode === 0) {
+        const fullPath = result.stdout.replace('\n', '');
+        return fullPath.replace(process.cwd(), '').replace(/^\//, '');
+    }
+    else {
+        throw new Error('unable to find Mix.Project.build_path()');
+    }
+});
+exports.getDestinationBuildPath = getDestinationBuildPath;
+
+
+/***/ }),
+
+/***/ 4923:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.mixDepsCompile = void 0;
+const core = __importStar(__nccwpck_require__(2186));
+const io = __importStar(__nccwpck_require__(7436));
+const utils_1 = __nccwpck_require__(6252);
+const cache_1 = __nccwpck_require__(3016);
+const constants_1 = __nccwpck_require__(9042);
+function mixDepsCompile(skipChecks) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const cwd = core.getInput('working-directory');
+        if (!skipChecks)
+            yield (0, utils_1.checks)(cwd);
+        const cached = yield (0, cache_1.restore)(cwd);
+        if (!cached) {
+            yield compileDeps(cwd);
+            yield (0, cache_1.save)(cwd);
+        }
+        yield moveCompiled(cwd);
+    });
+}
+exports.mixDepsCompile = mixDepsCompile;
+const compileDeps = (cwd) => __awaiter(void 0, void 0, void 0, function* () {
+    const env = Object.assign(Object.assign({}, process.env), { MIX_BUILD_ROOT: constants_1.DEPS_BUILD_ROOT });
+    const compile = yield (0, utils_1.exec)('mix', ['deps.compile'], { cwd, env });
+    if (compile.exitCode !== 0) {
+        throw new Error(`mix deps.compile failed to run`);
+    }
+});
+const moveCompiled = (cwd) => __awaiter(void 0, void 0, void 0, function* () {
+    const srcPath = yield (0, cache_1.getCompiledBuildPath)(cwd);
+    const buildPath = yield (0, cache_1.getDestinationBuildPath)(cwd);
+    yield io.mkdirP(buildPath);
+    yield io.cp(srcPath, buildPath, { recursive: true });
+});
+
+
+/***/ }),
+
+/***/ 9003:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getMixLockHash = exports.getDepsPath = exports.getCacheKey = exports.save = exports.restore = void 0;
+const glob = __importStar(__nccwpck_require__(8090));
+const utils = __importStar(__nccwpck_require__(6252));
+const path_1 = __importDefault(__nccwpck_require__(5622));
+const restore = (cwd) => __awaiter(void 0, void 0, void 0, function* () {
+    const key = yield (0, exports.getCacheKey)(cwd);
+    const depsPath = yield (0, exports.getDepsPath)(cwd);
+    const paths = [depsPath];
+    return yield utils.restoreCache(paths, key, []);
+});
+exports.restore = restore;
+const save = (cwd) => __awaiter(void 0, void 0, void 0, function* () {
+    const key = yield (0, exports.getCacheKey)(cwd);
+    const depsPath = yield (0, exports.getDepsPath)(cwd);
+    const paths = [depsPath];
+    return yield utils.saveCache(paths, key);
+});
+exports.save = save;
+const getCacheKey = (cwd) => __awaiter(void 0, void 0, void 0, function* () {
+    const parts = yield Promise.all([
+        'cache-deps',
+        utils.getPlatform(),
+        utils.getArch(),
+        utils.getElixirVersion(),
+        utils.getOtpVersion(),
+        (0, exports.getDepsPath)(cwd),
+        (0, exports.getMixLockHash)(cwd),
+    ]);
+    return parts.join('--');
+});
+exports.getCacheKey = getCacheKey;
+const getDepsPath = (cwd) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield utils.execElixir('IO.puts(Mix.Project.deps_path())', {
+        cwd,
+    });
+    if (result.exitCode === 0) {
+        const full = result.stdout.replace('\n', '');
+        return full.replace(process.cwd(), '').replace(/^\//, '');
+    }
+    else {
+        throw new Error('unable to find Mix.Project.deps_path()');
+    }
+});
+exports.getDepsPath = getDepsPath;
+const getMixLockHash = (cwd) => __awaiter(void 0, void 0, void 0, function* () {
+    const lockPath = path_1.default.join(cwd, 'mix.lock');
+    const hash = yield glob.hashFiles(lockPath);
+    return hash;
+});
+exports.getMixLockHash = getMixLockHash;
+
+
+/***/ }),
+
+/***/ 3508:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.mixDepsGet = void 0;
+const core = __importStar(__nccwpck_require__(2186));
+const utils_1 = __nccwpck_require__(6252);
+const cache_1 = __nccwpck_require__(9003);
+function mixDepsGet() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const cwd = core.getInput('working-directory');
+        yield (0, utils_1.checks)(cwd);
+        const cached = yield (0, cache_1.restore)(cwd);
+        if (!cached) {
+            const result = yield (0, utils_1.exec)('mix', ['deps.get'], { cwd });
+            if (result.exitCode !== 0) {
+                throw new Error(`mix deps.get failed to run`);
+            }
+            yield (0, cache_1.save)(cwd);
+        }
+    });
+}
+exports.mixDepsGet = mixDepsGet;
+
+
+/***/ }),
+
+/***/ 4763:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const core = __importStar(__nccwpck_require__(2186));
+const mix_compile_1 = __nccwpck_require__(7709);
+const mix_deps_compile_1 = __nccwpck_require__(4923);
+const mix_deps_get_1 = __nccwpck_require__(3508);
+function run() {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            yield (0, mix_deps_get_1.mixDepsGet)();
+            yield (0, mix_deps_compile_1.mixDepsCompile)(true);
+            yield (0, mix_compile_1.mixCompile)(true);
+        }
+        catch (error) {
+            if (error instanceof Error)
+                core.setFailed(error.message);
+        }
+    });
+}
+run();
 
 
 /***/ }),
@@ -62874,7 +63193,7 @@ module.exports = require("zlib");
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module is referenced by other modules so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(238);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(4763);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

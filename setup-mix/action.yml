@@ -1,5 +1,5 @@
-name: 'mix compile'
-description: 'Compiles and caches your mix application.'
+name: 'Setup mix project'
+description: 'Setup a mix project environment by installing dependencies and compiling the application.'
 author: 'Benjamin Stepp'
 
 inputs:
