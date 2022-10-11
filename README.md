@@ -1,5 +1,7 @@
 # elixir-actions
 
+<!--AUTO-->
+
 This repository contains multiple github actions for your elixir projects. In
 general, setup-elixir should be what you need, but all the internal actions are
 located here too.
