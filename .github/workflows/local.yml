@@ -28,7 +28,7 @@ jobs:
 
       - name: Build Packaged Actions
         run: |
-          npm run build:all
+          npm run build
 
       - name: Prepare Output
         run: |
@@ -44,7 +44,7 @@ jobs:
           version-type: 'strict'
 
       - name: Setup
-        uses: ./actions/setup
+        uses: ./actions/setup-mix
         with:
           working-directory: 'test_apps/elixir_app'
 

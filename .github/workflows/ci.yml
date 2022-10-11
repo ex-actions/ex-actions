@@ -94,8 +94,8 @@ jobs:
       - name: 'npm ci'
         run: 'npm ci'
 
-      - name: 'npm run build:all'
-        run: 'npm run build:all'
+      - name: 'npm run build'
+        run: 'npm run build'
 
       - name: 'Prepare Output'
         if: ${{ github.event_name == 'push' }}
@@ -124,7 +124,7 @@ jobs:
     needs: ['build']
     strategy:
       matrix:
-        app: ['elixir_app', 'elixir_umbrella', 'erlang_lib', 'test_umbrella']
+        app: ['elixir_app']
     defaults:
       run:
         working-directory: 'test_apps/${{ matrix.app }}'

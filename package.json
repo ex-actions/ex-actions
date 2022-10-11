@@ -7,10 +7,9 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "eslint src/**/*.ts",
-    "build": "ncc build src/$npm_config_action/entry.ts -o actions/$npm_config_action/dist --source-map --license licenses.txt",
-    "watch": "npm run build -- -w",
-    "test": "jest",
-    "build:all": "npm run build --action=mix-deps-get && npm run build --action=mix-deps-compile && npm run build --action=mix-compile && npm run build --action=setup-mix"
+    "build": "node ./esbuild.js",
+    "watch": "npm run build -- --watch",
+    "test": "jest"
   },
   "prettier": {
     "semi": false,
@@ -36,7 +35,7 @@
     "@types/jest": "^27.5.2",
     "@types/node": "^16.10.5",
     "@typescript-eslint/parser": "^4.33.0",
-    "@vercel/ncc": "^0.31.1",
+    "esbuild": "^0.14.54",
     "eslint": "^7.32.0",
     "eslint-import-resolver-alias": "^1.1.2",
     "eslint-plugin-github": "^4.3.2",
