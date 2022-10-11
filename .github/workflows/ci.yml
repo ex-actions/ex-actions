@@ -113,6 +113,11 @@ jobs:
           FOLDER: 'actions'
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: 'test lol'
+        run: |
+          pwd
+          find actions
+
       - uses: 'actions/upload-artifact@v3'
         with:
           name: 'compiled-actions'
@@ -141,10 +146,7 @@ jobs:
       - name: 'test lol'
         run: |
           pwd
-          cd actions
-          ls -lah
-          ls -lah setup-mix
-          ls -lah setup-mix/dist
+          find actions
 
       - uses: './actions/setup-mix'
         with:
