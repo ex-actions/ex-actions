@@ -113,11 +113,6 @@ jobs:
           FOLDER: 'actions'
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: 'test lol'
-        run: |
-          pwd
-          find actions
-
       - uses: 'actions/upload-artifact@v3'
         with:
           name: 'compiled-actions'
@@ -136,17 +131,13 @@ jobs:
       - uses: 'actions/download-artifact@v3'
         with:
           name: 'compiled-actions'
+          path: 'actions'
 
       - uses: 'erlef/setup-beam@v1'
         with:
           elixir-version: ${{ env.elixir-version }}
           otp-version: ${{ env.otp-version }}
           version-type: 'strict'
-
-      - name: 'test lol'
-        run: |
-          pwd
-          find actions
 
       - uses: './actions/setup-mix'
         with:
