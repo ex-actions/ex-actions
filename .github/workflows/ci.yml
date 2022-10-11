@@ -6,6 +6,10 @@ on:
   push:
     branches: ['main']
 
+env:
+  elixir-version: '1.14.1'
+  otp-version: '25.1.1'
+
 jobs:
   setup:
     name: 'Setup Node.js'
@@ -108,3 +112,35 @@ jobs:
           BRANCH: 'build'
           FOLDER: 'actions'
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: '@actions/upload-artifact@v3'
+        with:
+          name: 'compiled-actions'
+          path: 'actions'
+
+  test_apps:
+    name: 'test apps'
+    runs-on: 'ubuntu-latest'
+    needs: ['build']
+    strategy:
+      matrix:
+        app: ['elixir_app']
+    steps:
+      - uses: 'actions/checkout@v3'
+
+      - uses: '@actions/download-artifact@v3'
+        with:
+          name: 'compiled-actions'
+
+      - uses: erlef/setup-beam@v1
+        with:
+          elixir-version: ${{ env.elixir-version }}
+          otp-version: ${{ env.otp-version }}
+          version-type: 'strict'
+
+      - uses: './actions/setup-mix'
+        with:
+          working-directory: 'test_apps/${{ matrix.app }}'
+
+      - name: 'mix test'
+        run: 'mix test'
