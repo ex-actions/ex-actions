@@ -138,6 +138,14 @@ jobs:
           otp-version: ${{ env.otp-version }}
           version-type: 'strict'
 
+      - name: 'test lol'
+        run: |
+          pwd
+          cd actions
+          ls -lah
+          ls -lah setup-mix
+          ls -lah setup-mix/dist
+
       - uses: './actions/setup-mix'
         with:
           working-directory: 'test_apps/${{ matrix.app }}'
