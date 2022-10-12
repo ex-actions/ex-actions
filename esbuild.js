@@ -4,6 +4,9 @@ const config = {
   bundle: true,
   entryNames: '[dir]/dist/index',
   entryPoints: actions.map((a) => `src/${a}/entry.ts`),
+  loader: {
+    '.exs': 'text',
+  },
   minify: true,
   outbase: 'src',
   outdir: 'actions',

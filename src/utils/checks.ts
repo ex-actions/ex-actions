@@ -1,6 +1,7 @@
 import { access } from 'node:fs/promises'
 import { constants } from 'node:fs'
 import { exec } from './exec'
+import { execElixir } from './exec-elixir'
 import path from 'path'
 
 export const checks = async (cwd: string): Promise<void> => {
@@ -38,19 +39,7 @@ export const hexInstalled = async (): Promise<void> => {
 export const inMixProject = async (cwd: string): Promise<void> => {
   const options: { cwd?: string } = {}
   if (cwd !== '') options.cwd = cwd
-  const result = await exec(
-    'mix',
-    [
-      'run',
-      '-e',
-      'Mix.Project.get!()',
-      '--no-compile',
-      '--no-deps-check',
-      '--no-archives-check',
-      '--no-start',
-    ],
-    options
-  )
+  const result = await execElixir('Mix.Project.get!()', options)
 
   if (result.exitCode !== 0) {
     let message = 'mix project not found'

@@ -4,12 +4,13 @@
   "description": "Github Actions for Elixir projects.",
   "main": "src/setup-mix/entry.ts",
   "scripts": {
+    "build": "node ./esbuild.js",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "eslint src/**/*.ts",
-    "build": "node ./esbuild.js",
-    "watch": "npm run build -- --watch",
-    "test": "jest"
+    "tsc": "tsc --noEmit",
+    "test": "jest",
+    "watch": "npm run build -- --watch"
   },
   "prettier": {
     "semi": false,

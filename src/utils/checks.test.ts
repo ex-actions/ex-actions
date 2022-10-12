@@ -1,4 +1,5 @@
 import * as checks from './checks'
+import * as execElixirModule from './exec-elixir'
 import * as execModule from './exec'
 
 describe('elixirInstalled', () => {
@@ -145,49 +146,25 @@ describe('hexInstalled', () => {
 
 describe('inMixProject', () => {
   test('does not throw when successful with working-directory', async () => {
-    const exec = jest.spyOn(execModule, 'exec')
+    const exec = jest.spyOn(execElixirModule, 'execElixir')
 
     exec.mockResolvedValue({ exitCode: 0, stdout: '', stderr: '' })
 
     expect(await checks.inMixProject('backend')).toBe(undefined)
-    expect(exec).toHaveBeenCalledWith(
-      'mix',
-      [
-        'run',
-        '-e',
-        'Mix.Project.get!()',
-        '--no-compile',
-        '--no-deps-check',
-        '--no-archives-check',
-        '--no-start',
-      ],
-      { cwd: 'backend' }
-    )
+    expect(exec).toHaveBeenCalledWith('Mix.Project.get!()', { cwd: 'backend' })
   })
 
   test('does not throw when successful without working-directory', async () => {
-    const exec = jest.spyOn(execModule, 'exec')
+    const exec = jest.spyOn(execElixirModule, 'execElixir')
 
     exec.mockResolvedValue({ exitCode: 0, stdout: '', stderr: '' })
 
     expect(await checks.inMixProject('')).toBe(undefined)
-    expect(exec).toHaveBeenCalledWith(
-      'mix',
-      [
-        'run',
-        '-e',
-        'Mix.Project.get!()',
-        '--no-compile',
-        '--no-deps-check',
-        '--no-archives-check',
-        '--no-start',
-      ],
-      {}
-    )
+    expect(exec).toHaveBeenCalledWith('Mix.Project.get!()', {})
   })
 
   test('throws when mix project cannot be found with working-directory and rejected', async () => {
-    const exec = jest.spyOn(execModule, 'exec')
+    const exec = jest.spyOn(execElixirModule, 'execElixir')
 
     exec.mockRejectedValue(
       new Error(
@@ -198,23 +175,11 @@ describe('inMixProject', () => {
     await expect(checks.inMixProject('backend')).rejects.toThrow(
       '** (Mix) Cannot execute "mix run" without a Mix.Project, please ensure you are running Mix in a directory with a mix.exs file or pass the --no-mix-exs option'
     )
-    expect(exec).toHaveBeenCalledWith(
-      'mix',
-      [
-        'run',
-        '-e',
-        'Mix.Project.get!()',
-        '--no-compile',
-        '--no-deps-check',
-        '--no-archives-check',
-        '--no-start',
-      ],
-      { cwd: 'backend' }
-    )
+    expect(exec).toHaveBeenCalledWith('Mix.Project.get!()', { cwd: 'backend' })
   })
 
   test('throws when mix project cannot be found without working-directory and rejected', async () => {
-    const exec = jest.spyOn(execModule, 'exec')
+    const exec = jest.spyOn(execElixirModule, 'execElixir')
 
     exec.mockRejectedValue(
       new Error(
@@ -225,23 +190,11 @@ describe('inMixProject', () => {
     await expect(checks.inMixProject('')).rejects.toThrow(
       '** (Mix) Cannot execute "mix run" without a Mix.Project, please ensure you are running Mix in a directory with a mix.exs file or pass the --no-mix-exs option'
     )
-    expect(exec).toHaveBeenCalledWith(
-      'mix',
-      [
-        'run',
-        '-e',
-        'Mix.Project.get!()',
-        '--no-compile',
-        '--no-deps-check',
-        '--no-archives-check',
-        '--no-start',
-      ],
-      {}
-    )
+    expect(exec).toHaveBeenCalledWith('Mix.Project.get!()', {})
   })
 
   test('throws when mix project cannot be found with working-directory and resolved', async () => {
-    const exec = jest.spyOn(execModule, 'exec')
+    const exec = jest.spyOn(execElixirModule, 'execElixir')
 
     exec.mockResolvedValue({
       exitCode: 1,
@@ -253,23 +206,12 @@ describe('inMixProject', () => {
     await expect(checks.inMixProject('backend')).rejects.toThrow(
       'mix project not found in backend'
     )
-    expect(exec).toHaveBeenCalledWith(
-      'mix',
-      [
-        'run',
-        '-e',
-        'Mix.Project.get!()',
-        '--no-compile',
-        '--no-deps-check',
-        '--no-archives-check',
-        '--no-start',
-      ],
-      { cwd: 'backend' }
-    )
+
+    expect(exec).toHaveBeenCalledWith('Mix.Project.get!()', { cwd: 'backend' })
   })
 
   test('throws when mix project cannot be found without working-directory and resolved', async () => {
-    const exec = jest.spyOn(execModule, 'exec')
+    const exec = jest.spyOn(execElixirModule, 'execElixir')
 
     exec.mockResolvedValue({
       exitCode: 1,
@@ -281,18 +223,6 @@ describe('inMixProject', () => {
     await expect(checks.inMixProject('')).rejects.toThrow(
       'mix project not found'
     )
-    expect(exec).toHaveBeenCalledWith(
-      'mix',
-      [
-        'run',
-        '-e',
-        'Mix.Project.get!()',
-        '--no-compile',
-        '--no-deps-check',
-        '--no-archives-check',
-        '--no-start',
-      ],
-      {}
-    )
+    expect(exec).toHaveBeenCalledWith('Mix.Project.get!()', {})
   })
 })
