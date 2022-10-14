@@ -16,8 +16,9 @@ export async function mixCompile(skipChecks?: boolean): Promise<void> {
   if (!skipChecks) await checks(cwd)
 
   const cached = await restore(cwd)
+  const force = core.getBooleanInput('force-compile')
 
-  if (!cached) {
+  if (!cached || force) {
     await moveCompiledDeps(cwd)
     await compileApp(cwd)
     await deleteCompiledDeps(cwd)
