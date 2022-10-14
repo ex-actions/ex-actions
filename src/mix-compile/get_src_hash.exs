@@ -20,7 +20,6 @@ get_srcs = fn base_path ->
   erlang = Mix.Project.config()
   |> Keyword.get(:erlc_paths)
   |> then(&Mix.Utils.extract_files(&1, [:erl, :xrl, :yrl]))
-  |> Enum.map(&Mix.Utils.extract_files(&1, [:erl, :xrl, :yrl]))
 
   include = Mix.Project.config()
   |> Keyword.get(:erlc_include_path)
