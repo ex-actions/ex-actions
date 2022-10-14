@@ -1,40 +1,51 @@
-get_files_for_srcs = fn (srcs_key, extensions) ->
-  if Mix.Project.umbrella?() do
-    Mix.Project.apps_paths()
-    |> Map.to_list()
-    |> then(&Mix.Project.in_project(elem(&1, 0), elem(&1, 1), fn _ ->
-      srcs = Mix.Project.config[srcs_key]
-      Mix.Utils.extract_files(srcs, extensions)
-    end))
+elixir_3p = [
+  {:phoenix, [:heex]},
+]
+
+add_third_party_extensions = fn ({dep, extensions}, acc) ->
+  if dep in Mix.Project.deps_apps() do
+    [extensions|acc]
   else
-    srcs = Mix.Project.config[srcs_key]
-    Mix.Utils.extract_files(srcs, extensions)
+    acc
   end
 end
 
-get_files = fn
-  :app ->
-    []
-  :elixir ->
-    get_files_for_srcs.(:elixirc_paths, [:ex])
-  :erlang ->
-    get_files_for_srcs.(:erlc_paths, [:erl])
-  :leex ->
-    get_files_for_srcs.(:erlc_paths, [:xrl])
-  :yecc ->
-    get_files_for_srcs.(:erlc_paths, [:yrl])
-  _unknown_compiler ->
-    []
+get_srcs = fn base_path ->
+  extensions = Enum.reduce(elixir_3p, [:ex, :eex], &add_third_party_extensions.(&1, &2))
+
+  elixir = Mix.Project.config()
+  |> Keyword.get(:elixirc_paths)
+  |> then(&Mix.Utils.extract_files(&1, extensions))
+
+  erlang = Mix.Project.config()
+  |> Keyword.get(:erlc_paths)
+  |> then(&Mix.Utils.extract_files(&1, [:erl, :xrl, :yrl]))
+  |> Enum.map(&Mix.Utils.extract_files(&1, [:erl, :xrl, :yrl]))
+
+  include = Mix.Project.config()
+  |> Keyword.get(:erlc_include_path)
+  |> List.wrap()
+  |> then(&Mix.Utils.extract_files(&1, "*"))
+
+  priv = Mix.Utils.extract_files(["priv"], "*")
+
+  [elixir,erlang, priv, include]
+  |> List.flatten()
+  |> Enum.map(&"#{base_path}/#{&1}")
+  |> Enum.map(&String.replace_leading(&1, "/", ""))
 end
 
-add_priv_and_include = fn files ->
-  [Mix.Utils.extract_files(["priv", "include"], "*")| files]
+get_srcs_for_app = fn {app, path} when is_atom(app) and is_binary(path) ->
+  Mix.Project.in_project(app, path, fn _mod -> get_srcs.(path) end)
 end
 
-Mix.Tasks.Compile.compilers()
-|> Enum.map(&get_files.(&1))
-|> then(&add_priv_and_include.(&1))
+if Mix.Project.umbrella?() do
+  Enum.map(Mix.Project.apps_paths(), &get_srcs_for_app.(&1))
+else
+  get_srcs.("")
+end
 |> List.flatten()
+|> Enum.sort()
 |> Enum.reduce(:crypto.hash_init(:sha256), fn file, hash ->
   hash
   |> :crypto.hash_update(file)
