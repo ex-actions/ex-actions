@@ -8,6 +8,12 @@ inputs:
       can add a hash of them here. Can also be passed to "bust" the current cache.'
     required: false
     default: 'key'
+  force-compile:
+    description: 'Force runs mix compile on every action run. We try really
+      hard to include all the correct src files as a part of the cache key, but
+      in the cases where we failed you can force compile every time. You should
+      still get incremental caches from the last created build.'
+    required: false
   working-directory:
     description: 'Path to your elixir application. This can be configured if
       your elixir application is in a subdirectory, for example if you are in a
