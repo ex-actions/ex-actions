@@ -124,7 +124,7 @@ jobs:
     needs: ['build']
     strategy:
       matrix:
-        app: ['elixir_app']
+        app: ['elixir_app', 'elixir_umbrella', 'test_umbrella', 'erlang_lib']
     defaults:
       run:
         working-directory: 'test_apps/${{ matrix.app }}'
