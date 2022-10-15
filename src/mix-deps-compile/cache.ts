@@ -5,7 +5,7 @@ export const restore = async (cwd: string): Promise<boolean> => {
   const key = await getCacheKey(cwd)
   const buildPath = await getCompiledBuildPath(cwd)
   const paths = [buildPath]
-  return await utils.restoreCache(paths, key, [])
+  return await utils.restoreCache(paths, key, restoreKeys(key))
 }
 
 export const save = async (cwd: string): Promise<void> => {
@@ -22,10 +22,16 @@ export const getCacheKey = async (cwd: string): Promise<string> => {
     utils.getArch(),
     utils.getElixirVersion(),
     utils.getOtpVersion(),
-    utils.getMixLockHash(cwd),
     getDestinationBuildPath(cwd),
+    utils.getMixLockHash(cwd),
   ])
   return parts.join('--')
+}
+
+export const restoreKeys = (key: string): string[] => {
+  const restorable: string = key.split('--').slice(0, -1).join('--')
+
+  return [`${restorable}--`]
 }
 
 export const getCompiledBuildPath = async (cwd: string): Promise<string> => {
