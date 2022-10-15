@@ -13,6 +13,7 @@ inputs:
       hard to include all the correct src files as a part of the cache key, but
       in the cases where we failed you can force compile every time. You should
       still get incremental caches from the last created build.'
+    default: false
     required: false
   working-directory:
     description: 'Path to your elixir application. This can be configured if
