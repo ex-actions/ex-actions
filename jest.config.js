@@ -7,6 +7,7 @@ module.exports = {
   testMatch: ['**/*.test.ts'],
   transform: {
     '^.+\\.ts$': 'ts-jest',
+    '^.+\\.exs$': 'jest-raw-loader',
   },
   verbose: true,
 }
