@@ -19,6 +19,7 @@ export const exec = async (
   let stderr = ''
 
   const options = {
+    silent: !core.isDebug(),
     listeners: {
       stdout: (data: Buffer) => {
         stdout += data.toString()
