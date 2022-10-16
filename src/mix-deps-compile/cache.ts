@@ -1,4 +1,3 @@
-import * as core from '@actions/core'
 import * as utils from '../utils'
 import { DEPS_BUILD_ROOT } from '../constants'
 
@@ -17,8 +16,6 @@ export const save = async (cwd: string): Promise<void> => {
 }
 
 export const getCacheKey = async (cwd: string): Promise<string> => {
-  core.startGroup('generating cache key')
-
   const parts = await Promise.all([
     'cache-compiled-deps',
     utils.getPlatform(),
@@ -29,7 +26,6 @@ export const getCacheKey = async (cwd: string): Promise<string> => {
     utils.getMixLockHash(cwd),
   ])
 
-  core.endGroup()
   return parts.join('--')
 }
 

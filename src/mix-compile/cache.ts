@@ -19,8 +19,6 @@ export const save = async (cwd: string): Promise<void> => {
 }
 
 export const getCacheKey = async (cwd: string): Promise<string> => {
-  core.startGroup('generating cache key')
-
   const parts = await Promise.all([
     'cache-compiled-app',
     utils.getPlatform(),
@@ -34,7 +32,6 @@ export const getCacheKey = async (cwd: string): Promise<string> => {
     getSrcFilesHash(cwd),
   ])
 
-  core.endGroup()
   return parts.join('--')
 }
 

@@ -1,4 +1,3 @@
-import * as core from '@actions/core'
 import * as glob from '@actions/glob'
 import * as utils from '../utils'
 import path from 'path'
@@ -14,12 +13,11 @@ export const save = async (cwd: string): Promise<void> => {
   const key = await getCacheKey(cwd)
   const depsPath = await getDepsPath(cwd)
   const paths = [depsPath]
-  return await utils.saveCache(paths, key)
+  const result = await utils.saveCache(paths, key)
+  return result
 }
 
 export const getCacheKey = async (cwd: string): Promise<string> => {
-  core.startGroup('generating cache key')
-
   const parts = await Promise.all([
     'cache-deps',
     utils.getPlatform(),
@@ -30,7 +28,6 @@ export const getCacheKey = async (cwd: string): Promise<string> => {
     getMixLockHash(cwd),
   ])
 
-  core.endGroup()
   return parts.join('--')
 }
 
