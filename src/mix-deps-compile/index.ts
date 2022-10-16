@@ -10,6 +10,7 @@ import {
 import { DEPS_BUILD_ROOT } from '../constants'
 
 export async function mixDepsCompile(skipChecks?: boolean): Promise<void> {
+  core.info('Running @ex-actions/mix-deps-compile')
   const cwd: string = core.getInput('working-directory')
   if (!skipChecks) await checks(cwd)
 

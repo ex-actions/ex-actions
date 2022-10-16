@@ -6,17 +6,15 @@ export const restoreCache = async (
   key: string,
   restoreKeys: string[]
 ): Promise<boolean> => {
-  core.startGroup(`restore-cache: ${key}`)
+  core.info(`@actions/cache/restore ${key}`)
   core.debug(key)
 
   if (!rawCache.isFeatureAvailable()) {
     core.warning('@actions/cache feature not available')
-    core.endGroup()
     return false
   }
 
   const restoredKey = await rawCache.restoreCache(paths, key, restoreKeys)
-  core.endGroup()
   return Boolean(restoredKey)
 }
 
@@ -24,16 +22,14 @@ export const saveCache = async (
   paths: string[],
   key: string
 ): Promise<void> => {
-  core.startGroup(`saving-cache: ${key}`)
+  core.info(`@actions/cache/save ${key}`)
   core.debug(key)
 
   if (!rawCache.isFeatureAvailable()) {
     core.warning('@actions/cache feature not available')
-    core.endGroup()
     return
   }
 
   await rawCache.saveCache(paths, key)
-  core.endGroup()
   return
 }

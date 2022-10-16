@@ -11,6 +11,7 @@ import {
 import { APP_BUILD_ROOT } from '../constants'
 
 export async function mixCompile(skipChecks?: boolean): Promise<void> {
+  core.info('Running @ex-actions/mix-compile')
   const cwd: string = core.getInput('working-directory')
 
   if (!skipChecks) await checks(cwd)
@@ -22,7 +23,9 @@ export async function mixCompile(skipChecks?: boolean): Promise<void> {
     await moveCompiledDeps(cwd)
     await compileApp(cwd)
     await deleteCompiledDeps(cwd)
-    await save(cwd)
+    if (!cached) {
+      await save(cwd)
+    }
   }
 
   await moveCompiledApp(cwd)

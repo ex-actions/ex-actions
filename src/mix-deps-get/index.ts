@@ -3,6 +3,7 @@ import { checks, exec } from '../utils'
 import { restore, save } from './cache'
 
 export async function mixDepsGet(): Promise<void> {
+  core.info('Running @ex-actions/mix-deps-get')
   const cwd: string = core.getInput('working-directory')
   await checks(cwd)
 
