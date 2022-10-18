@@ -9,7 +9,7 @@ export async function mixDepsGet(): Promise<void> {
   const cached = await restore(cwd)
 
   if (!cached) {
-    const result = await exec('mix', ['deps.get'], { cwd })
+    const result = await exec('mix', ['deps.get'], { cwd, silent: false })
 
     if (result.exitCode !== 0) {
       throw new Error(`mix deps.get failed to run`)

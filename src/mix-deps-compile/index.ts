@@ -26,7 +26,11 @@ export async function mixDepsCompile(): Promise<void> {
 
 const compileDeps = async (cwd: string): Promise<void> => {
   const env = { ...process.env, MIX_BUILD_ROOT: DEPS_BUILD_ROOT }
-  const compile = await exec('mix', ['deps.compile'], { cwd, env })
+  const compile = await exec('mix', ['deps.compile'], {
+    cwd,
+    env,
+    silent: false,
+  })
   if (compile.exitCode !== 0) {
     throw new Error(`mix deps.compile failed to run`)
   }

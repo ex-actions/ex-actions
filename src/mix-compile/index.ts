@@ -39,7 +39,7 @@ const moveCompiledDeps = async (cwd: string): Promise<void> => {
 
 const compileApp = async (cwd: string): Promise<void> => {
   const env = { ...process.env, MIX_BUILD_ROOT: APP_BUILD_ROOT }
-  const compile = await exec('mix', ['compile'], { cwd, env })
+  const compile = await exec('mix', ['compile'], { cwd, env, silent: false })
   if (compile.exitCode !== 0) {
     throw new Error(`mix compile failed to run`)
   }
