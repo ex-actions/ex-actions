@@ -7,6 +7,7 @@ const config = {
   loader: {
     '.exs': 'text',
   },
+  keepNames: true,
   minify: true,
   outbase: 'src',
   outdir: 'actions',
