@@ -5,8 +5,9 @@ import { exec } from './exec'
 import { execElixir } from './exec-elixir'
 import path from 'path'
 
-export const checks = async (cwd: string): Promise<void> => {
+export const checks = async (): Promise<void> => {
   core.startGroup('Running Checks')
+  const cwd: string = core.getInput('working-directory')
   await elixirInstalled()
   await mixInstalled()
   await hexInstalled()

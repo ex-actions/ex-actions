@@ -1,6 +1,5 @@
 import * as core from '@actions/core'
 import * as io from '@actions/io'
-import { checks, exec } from '../utils'
 import {
   getCompiledBuildPath,
   getDestinationBuildPath,
@@ -8,11 +7,11 @@ import {
   save,
 } from './cache'
 import { DEPS_BUILD_ROOT } from '../constants'
+import { exec } from '../utils'
 
-export async function mixDepsCompile(skipChecks?: boolean): Promise<void> {
-  core.info('Running @ex-actions/mix-deps-compile')
+export async function mixDepsCompile(): Promise<void> {
+  core.startGroup('Running @ex-actions/mix-deps-compile')
   const cwd: string = core.getInput('working-directory')
-  if (!skipChecks) await checks(cwd)
 
   const cached = await restore(cwd)
 
@@ -22,6 +21,7 @@ export async function mixDepsCompile(skipChecks?: boolean): Promise<void> {
   }
 
   await moveCompiled(cwd)
+  core.endGroup()
 }
 
 const compileDeps = async (cwd: string): Promise<void> => {

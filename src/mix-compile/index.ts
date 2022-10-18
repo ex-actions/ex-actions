@@ -1,7 +1,6 @@
 import * as core from '@actions/core'
 import * as glob from '@actions/glob'
 import * as io from '@actions/io'
-import { checks, exec } from '../utils'
 import {
   getCompiledBuildPath,
   getDestinationBuildPath,
@@ -9,12 +8,11 @@ import {
   save,
 } from './cache'
 import { APP_BUILD_ROOT } from '../constants'
+import { exec } from '../utils'
 
-export async function mixCompile(skipChecks?: boolean): Promise<void> {
-  core.info('Running @ex-actions/mix-compile')
+export async function mixCompile(): Promise<void> {
+  core.startGroup('Running @ex-actions/mix-compile')
   const cwd: string = core.getInput('working-directory')
-
-  if (!skipChecks) await checks(cwd)
 
   const cached = await restore(cwd)
   const force = core.getBooleanInput('force-compile')
@@ -29,6 +27,7 @@ export async function mixCompile(skipChecks?: boolean): Promise<void> {
   }
 
   await moveCompiledApp(cwd)
+  core.endGroup()
 }
 
 const moveCompiledDeps = async (cwd: string): Promise<void> => {
