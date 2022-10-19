@@ -152,7 +152,7 @@ jobs:
           BRANCH: 'main'
           FOLDER: 'actions/${{ matrix.action }}'
           SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_KEY }}
-          MESSAGE: '{msg}\n\nbuild output\ncommit: ex-actions/ex-actions@{sha}\nrun: https://github.com/ex-actions/ex-actions/actions/runs/${{ github.run_id }}'
+          MESSAGE: "{msg}\n\nbuild output\ncommit: ex-actions/ex-actions@{sha}\nrun: https://github.com/ex-actions/ex-actions/actions/runs/${{ github.run_id }}"
 
       - name: 'Prepare Output'
         if: ${{ matrix.action == 'ALL' }}
@@ -168,7 +168,7 @@ jobs:
           BRANCH: 'build'
           FOLDER: 'actions'
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          MESSAGE: '{msg}\n\nbuild output\ncommit: ex-actions/ex-actions@{sha}\nrun: https://github.com/ex-actions/ex-actions/actions/runs/${{ github.run_id }}'
+          MESSAGE: "{msg}\n\nbuild output\ncommit: ex-actions/ex-actions@{sha}\nrun: https://github.com/ex-actions/ex-actions/actions/runs/${{ github.run_id }}"
 
   test_apps:
     name: 'Test Mix Projects'
