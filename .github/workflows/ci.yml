@@ -146,7 +146,7 @@ jobs:
         app: ['elixir_app', 'elixir_umbrella', 'test_umbrella', 'erlang_lib']
     defaults:
       run:
-        working-directory: 'test_apps/${{ matrix.app }}'
+        working-directory: 'test/fixtures/${{ matrix.app }}'
     steps:
       - uses: 'actions/checkout@v3'
 
@@ -163,7 +163,7 @@ jobs:
 
       - uses: './actions/setup-mix'
         with:
-          working-directory: 'test_apps/${{ matrix.app }}'
+          working-directory: 'test/fixtures/${{ matrix.app }}'
 
       - name: 'mix test'
         run: 'mix test'
