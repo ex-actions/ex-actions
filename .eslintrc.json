@@ -57,7 +57,7 @@
   "settings": {
     "import/resolver": {
       "alias": {
-        "map": [["test-helpers", "./src/test-helpers"]],
+        "map": [["test-helpers", "./test/test-helpers"]],
         "extensions": [".ts", ".js"]
       }
     }

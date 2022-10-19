@@ -2,7 +2,7 @@ module.exports = {
   clearMocks: true,
   moduleFileExtensions: ['js', 'ts'],
   moduleNameMapper: {
-    '^test-helpers$': '<rootDir>/src/test-helpers.ts',
+    '^test-helpers$': '<rootDir>/test/test-helpers.ts',
   },
   testMatch: ['**/*.test.ts'],
   transform: {
