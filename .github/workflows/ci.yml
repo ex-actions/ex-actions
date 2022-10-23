@@ -131,10 +131,10 @@ jobs:
       matrix:
         action:
           [
-            '{"name": "mix-compile", "key": "${{ secrets.DEPLOY_KEY_MIX_COMPILE }}"}',
-            '{"name": "mix-deps-compile", "key": "${{ secrets.DEPLOY_KEY_MIX_DEPS_COMPILE }}"}',
-            '{"name": "mix-deps-get", "key": "${{ secrets.DEPLOY_KEY_MIX_DEPS_GET }}"}',
-            '{"name": "setup-mix", "key": "${{ secrets.DEPLOY_KEY_SETUP_MIX }}"}',
+            '{"name": "mix-compile", "key": "DEPLOY_KEY_MIX_COMPILE"}',
+            '{"name": "mix-deps-compile", "key": "DEPLOY_KEY_MIX_DEPS_COMPILE"}',
+            '{"name": "mix-deps-get", "key": "DEPLOY_KEY_MIX_DEPS_GET"}',
+            '{"name": "setup-mix", "key": "DEPLOY_KEY_SETUP_MIX"}',
             '{"name": "ALL"}',
           ]
     steps:
@@ -158,7 +158,7 @@ jobs:
           REPO: 'git@github.com:ex-actions/${{ fromJSON(matrix.action).name }}.git'
           BRANCH: 'main'
           FOLDER: 'actions/${{ fromJSON(matrix.action).name }}'
-          SSH_PRIVATE_KEY: ${{ fromJSON(matrix.action).key }}
+          SSH_PRIVATE_KEY: ${{ secrets[fromJSON(matrix.action).key] }}
           MESSAGE: "{msg}\n\nbuild output\ncommit: ex-actions/ex-actions@{sha}\nrun: https://github.com/ex-actions/ex-actions/actions/runs/${{ github.run_id }}"
 
       - name: 'Prepare Output'
