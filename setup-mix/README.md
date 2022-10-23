@@ -1,7 +1,5 @@
 # setup-mix
 
-<!--AUTO-->
-
 This GitHub action will download and cache your mix dependencies, compile the
 mix dependencies, and compile your mix application.
 
