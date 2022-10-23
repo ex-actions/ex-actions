@@ -1,5 +1,8 @@
 # ex-actions
 
+[![Build Status](https://github.com/ex-actions/ex-actions/actions/workflows/ci.yml/badge.svg)](https://github.com/ex-actions/ex-actions/actions)
+[![License MIT](https://img.shields.io/badge/license-MIT-green 'License MIT')](https://github.com/ex-actions/ex-actions/blob/main/LICENSE)
+
 This repository contains multiple github actions for your elixir projects. In
 general, setup-mix should be what you need, but all the internal actions are
 located here too.
