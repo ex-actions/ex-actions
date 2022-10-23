@@ -129,7 +129,14 @@ jobs:
     needs: ['build']
     strategy:
       matrix:
-        action: ['mix-deps-get', 'ALL']
+        action:
+          [
+            'mix-compile',
+            'mix-deps-compile',
+            'mix-deps-get',
+            'setup-mix',
+            'ALL',
+          ]
     steps:
       - uses: 'actions/checkout@v3'
 
