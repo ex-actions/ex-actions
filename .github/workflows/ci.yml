@@ -207,3 +207,45 @@ jobs:
 
       - name: 'mix test'
         run: 'mix test'
+  test_apps_with_pg:
+    name: 'Test Mix Projects with Postgres'
+    runs-on: 'ubuntu-latest'
+    needs: ['build']
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - '5432:5432'
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    strategy:
+      matrix:
+        app: ['phoenix_app']
+    defaults:
+      run:
+        working-directory: 'test/fixtures/${{ matrix.app }}'
+    steps:
+      - uses: 'actions/checkout@v3'
+
+      - uses: 'actions/download-artifact@v3'
+        with:
+          name: 'compiled-actions'
+          path: 'actions'
+
+      - uses: 'erlef/setup-beam@v1'
+        with:
+          elixir-version: ${{ env.elixir-version }}
+          otp-version: ${{ env.otp-version }}
+          version-type: 'strict'
+
+      - uses: './actions/setup-mix'
+        with:
+          working-directory: 'test/fixtures/${{ matrix.app }}'
+
+      - name: 'mix test'
+        run: 'mix test'
