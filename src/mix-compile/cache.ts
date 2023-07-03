@@ -48,7 +48,7 @@ export const restoreKeys = (key: string): string[] => {
 
 export const getCompiledBuildPath = async (cwd: string): Promise<string> => {
   const env = { ...process.env, MIX_BUILD_ROOT: APP_BUILD_ROOT }
-  const result = await utils.execElixir('IO.puts(Mix.Project.build_path)', {
+  const result = await utils.execElixir('output.(Mix.Project.build_path)', {
     cwd,
     env,
   })
@@ -61,7 +61,7 @@ export const getCompiledBuildPath = async (cwd: string): Promise<string> => {
 }
 
 export const getDestinationBuildPath = async (cwd: string): Promise<string> => {
-  const result = await utils.execElixir('IO.puts(Mix.Project.build_path)', {
+  const result = await utils.execElixir('output.(Mix.Project.build_path)', {
     cwd,
   })
   if (result.exitCode === 0) {

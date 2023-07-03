@@ -26,11 +26,20 @@ export async function mixDepsCompile(): Promise<void> {
 
 const compileDeps = async (cwd: string): Promise<void> => {
   const env = { ...process.env, MIX_BUILD_ROOT: DEPS_BUILD_ROOT }
-  const compile = await exec('mix', ['deps.compile'], {
-    cwd,
-    env,
-    silent: false,
-  })
+  const compile = await exec(
+    'mix',
+    [
+      'deps.compile',
+      '--skip-umbrella-children',
+      '--skip-local-deps',
+      '--include-children',
+    ],
+    {
+      cwd,
+      env,
+      silent: false,
+    }
+  )
   if (compile.exitCode !== 0) {
     throw new Error(`mix deps.compile failed to run`)
   }
@@ -41,5 +50,5 @@ const moveCompiled = async (cwd: string): Promise<void> => {
   const buildPath = await getDestinationBuildPath(cwd)
 
   await io.mkdirP(buildPath)
-  await io.cp(srcPath, buildPath, { recursive: true })
+  await io.cp(`${srcPath}/.`, buildPath, { recursive: true })
 }

@@ -38,7 +38,7 @@ export const restoreKeys = (key: string): string[] => {
 }
 
 export const getDepsPath = async (cwd: string): Promise<string> => {
-  const result = await utils.execElixir('IO.puts(Mix.Project.deps_path())', {
+  const result = await utils.execElixir('output.(Mix.Project.deps_path())', {
     cwd,
   })
 
