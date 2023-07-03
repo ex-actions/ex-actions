@@ -5,16 +5,39 @@ mix dependencies, and compile your mix application.
 
 ## Usage
 
+1. Ensure `:crypto` is available in your mix project. This can be done by
+   adding `:crypto` to your `:extra_applications` in `mix.exs`
+
+### Example workflow
+
+```yml
+steps:
+  - uses: 'actions/checkout@v3'
+
+  - uses: 'erlef/setup-beam@v1'
+    with:
+      elixir-version: '1.15.1'
+      otp-version: '25.3.2.2'
+      version-type: 'strict'
+
+  - uses: 'ex-actions/setup-mix@main'
+
+  - name: 'mix test'
+    run: 'mix test'
+```
+
+## Options
+
 ### Setup in the repository root.
 
 ```yml
-- uses: 'ex-actions/mix-deps-get@main'
+- uses: 'ex-actions/setup-mix@main'
 ```
 
 ### Setup in the `./backend` subdirectory
 
 ```yml
-- uses: 'ex-actions/mix-deps-get@main'
+- uses: 'ex-actions/setup-mix@main'
   with:
     working-directory: 'backend'
 ```
@@ -22,7 +45,7 @@ mix dependencies, and compile your mix application.
 ### Setup in the `./advanced_math` subdirectory and add a custom hash for rust srcs
 
 ```yml
-- uses: 'ex-actions/mix-deps-get@main'
+- uses: 'ex-actions/setup-mix@main'
   with:
     working-directory: 'advanced_math'
     cache-key: '${{ env.rust-version }}-${{ hashFiles('**/*.rs') }}'
