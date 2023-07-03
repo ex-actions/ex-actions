@@ -20,6 +20,8 @@ export const exec = async (
 
   const options = {
     silent: !core.isDebug(),
+
+    ignoreReturnCode: true,
     listeners: {
       stdout: (data: Buffer) => {
         stdout += data.toString()
@@ -34,10 +36,11 @@ export const exec = async (
   const exitCode = await rawExec(command, args, options)
 
   core.debug(stdout)
-  if (stderr.length > 0) {
+  if (exitCode !== 0) {
+    core.error(stdout)
     core.error(stderr)
+    throw new Error(`The process ${command} failed with exitCode ${exitCode}`)
   }
-  core.debug(`exitCode: ${exitCode}`)
 
   return {
     exitCode,
