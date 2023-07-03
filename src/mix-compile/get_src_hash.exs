@@ -20,7 +20,7 @@ add_third_party_extensions = fn ({dep, extensions}, acc) ->
 end
 
 get_srcs = fn base_path ->
-  extensions = Enum.reduce(elixir_3p, [:ex, :eex], &add_third_party_extensions.(&1, &2))
+  extensions = List.flatten(Enum.reduce(elixir_3p, [:ex, :eex], &add_third_party_extensions.(&1, &2)))
 
   elixir = Mix.Project.config()
   |> Keyword.get(:elixirc_paths)
@@ -55,9 +55,18 @@ end
 |> List.flatten()
 |> Enum.sort()
 |> Enum.reduce(:crypto.hash_init(:sha256), fn file, hash ->
-  hash
-  |> :crypto.hash_update(file)
-  |> :crypto.hash_update(File.read!(file))
+  case File.read(file) do
+    {:ok, binary} ->
+      hash
+      |> :crypto.hash_update(file)
+      |> :crypto.hash_update(binary)
+
+    {:error, :eisdir} ->
+      hash
+
+    {:error, reason} ->
+      raise "cannot read #{file} #{reason}"
+  end
 end)
 |> :crypto.hash_final()
 |> Base.encode16()
