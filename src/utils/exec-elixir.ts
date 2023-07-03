@@ -4,24 +4,28 @@ const DEFAULT_OPTIONS: string[] = [
   '--no-compile',
   '--no-deps-check',
   '--no-archives-check',
-  '--no-start',
   '--no-elixir-version-check',
 ]
 
+const TAG = '<<ex-actions#output>>'
 const SCRIPT_PREFIX = `
-  :logger
-  |> Application.get_env(:backends)
-  |> Enum.map(&Logger.remove_backend/1)
-
+  output = fn text ->
+    IO.puts("${TAG}#{text}${TAG}")
+  end
 `
 
 export const execElixir = async (
   script: string,
   opts?: object
 ): Promise<ExecResponse> => {
-  return await exec(
+  const result = await exec(
     'mix',
-    ['run', '-e', SCRIPT_PREFIX + script, ...DEFAULT_OPTIONS],
+    ['eval', SCRIPT_PREFIX + script, ...DEFAULT_OPTIONS],
     opts
   )
+
+  const parts = result.stdout.split(TAG)
+  const stdout = parts.length === 3 ? parts[1] : result.stdout
+
+  return { ...result, stdout }
 }
