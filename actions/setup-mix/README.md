@@ -5,11 +5,6 @@ mix dependencies, and compile your mix application.
 
 ## Usage
 
-1. Ensure `:crypto` is available in your mix project. This can be done by
-   adding `:crypto` to your `:extra_applications` in `mix.exs`
-
-### Example workflow
-
 ```yml
 steps:
   - uses: 'actions/checkout@v3'
