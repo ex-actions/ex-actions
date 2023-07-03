@@ -1,34 +1,38 @@
 elixir_3p = [
-  {:phoenix, [:heex]},
+  {:phoenix, [:heex]}
 ]
 
-add_third_party_extensions = fn ({dep, extensions}, acc) ->
+add_third_party_extensions = fn {dep, extensions}, acc ->
   if dep in Mix.Project.deps_apps() do
-    [extensions|acc]
+    [extensions | acc]
   else
     acc
   end
 end
 
 get_srcs = fn base_path ->
-  extensions = List.flatten(Enum.reduce(elixir_3p, [:ex, :eex], &add_third_party_extensions.(&1, &2)))
+  extensions =
+    List.flatten(Enum.reduce(elixir_3p, [:ex, :eex], &add_third_party_extensions.(&1, &2)))
 
-  elixir = Mix.Project.config()
-  |> Keyword.get(:elixirc_paths)
-  |> then(&Mix.Utils.extract_files(&1, extensions))
+  elixir =
+    Mix.Project.config()
+    |> Keyword.get(:elixirc_paths)
+    |> then(&Mix.Utils.extract_files(&1, extensions))
 
-  erlang = Mix.Project.config()
-  |> Keyword.get(:erlc_paths)
-  |> then(&Mix.Utils.extract_files(&1, [:erl, :xrl, :yrl]))
+  erlang =
+    Mix.Project.config()
+    |> Keyword.get(:erlc_paths)
+    |> then(&Mix.Utils.extract_files(&1, [:erl, :xrl, :yrl]))
 
-  include = Mix.Project.config()
-  |> Keyword.get(:erlc_include_path)
-  |> List.wrap()
-  |> then(&Mix.Utils.extract_files(&1, "*"))
+  include =
+    Mix.Project.config()
+    |> Keyword.get(:erlc_include_path)
+    |> List.wrap()
+    |> then(&Mix.Utils.extract_files(&1, "*"))
 
   priv = Mix.Utils.extract_files(["priv"], "*")
 
-  [elixir,erlang, priv, include]
+  [elixir, erlang, priv, include]
   |> List.flatten()
   |> Enum.map(&"#{base_path}/#{&1}")
   |> Enum.map(&String.replace_leading(&1, "/", ""))
