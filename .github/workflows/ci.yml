@@ -99,10 +99,25 @@ jobs:
       - name: 'npm run test'
         run: 'npm run test'
 
+  mix_format:
+    name: 'mix format'
+    runs-on: 'ubuntu-latest'
+    steps:
+      - uses: 'actions/checkout@v3'
+
+      - uses: 'erlef/setup-beam@v1'
+        with:
+          elixir-version: ${{ env.elixir-version }}
+          otp-version: ${{ env.otp-version }}
+          version-type: 'strict'
+
+      - name: 'mix format'
+        run: 'mix format --check-formatted "src/**/*.exs"'
+
   build:
     name: 'build'
     runs-on: 'ubuntu-latest'
-    needs: ['format', 'lint', 'test', 'tsc']
+    needs: ['format', 'lint', 'test', 'tsc', 'mix_format']
     steps:
       - uses: 'actions/checkout@v3'
 
